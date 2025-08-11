@@ -46,18 +46,18 @@
 
       // Создаем кнопку
       const buttonContainer = document.createElement('div');
-      buttonContainer.style.marginTop = '8px';
+      buttonContainer.style.marginTop = '16px';
 
       const button = document.createElement('button');
       button.id = 'custom-watch-button';
-      button.textContent = 'Смотреть';
+      button.textContent = 'Смотреть бесплатно';
       button.style.color = '#fff';
       button.style.background = 'linear-gradient(135deg, #f50 69.93%, #d6bb00 100%)';
       button.style.transition = 'background 0.3s ease, transform 0.3s ease';
       button.style.border = 'none';
-      button.style.borderRadius = '4px';
-      button.style.padding = '8px 16px';
-      button.style.fontSize = '14px';
+      button.style.borderRadius = '8px';
+      button.style.padding = '16px 32px';
+      button.style.fontSize = '20px';
       button.style.fontWeight = 'bold';
       button.style.cursor = 'pointer';
       button.style.display = 'inline-block';
