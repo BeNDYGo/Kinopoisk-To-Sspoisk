@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Kinopoisk to Sspoisk",
+  "version": "1.0",
+  "description": "Добавляет кнопку для открытия страницы на sspoisk.ru для бесплатного просмотра",
+  "content_scripts": [
+    {
+      "matches": ["*://*.kinopoisk.ru/*", "*://*.flcksbr.top/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["Kinopoisk_to_Sspoisk.png"],
+      "matches": ["*://*.flcksbr.top/*"]
+    }
+  ],
+  "permissions": []
+}
