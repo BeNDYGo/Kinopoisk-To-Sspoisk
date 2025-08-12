@@ -1,7 +1,6 @@
 (function() {
   const hostname = window.location.hostname;
 
-  // Объявляем переменную для таймера в замыкании
   let checkTimer = null;
 
   // Функция для добавления кнопки на kinopoisk.ru
@@ -17,7 +16,7 @@
       return;
     }
 
-    // Поиск элементов с задержкой (рекурсивно)
+    // Поиск элементов
     function checkElements() {
       const h1 = document.querySelector('h1[itemprop="name"]');
       if (!h1) {
@@ -44,7 +43,7 @@
         return;
       }
 
-      // Создаем кнопку
+      // Создание кнопки
       const buttonContainer = document.createElement('div');
       buttonContainer.style.marginTop = '16px';
 
@@ -79,7 +78,7 @@
       console.log('Info: Button successfully added!');
     }
 
-    // Очищаем предыдущий таймер
+    // Очистка таймера
     if (checkTimer) clearTimeout(checkTimer);
     checkTimer = setTimeout(checkElements, 300);
   }
@@ -88,7 +87,7 @@
     // Первоначальная проверка
     addWatchButtonIfNeeded();
 
-    // Обработчики SPA-навигации
+    // Обработчики SPA
     const originalPushState = history.pushState;
     history.pushState = function() {
       originalPushState.apply(this, arguments);
@@ -105,7 +104,7 @@
       addWatchButtonIfNeeded();
     });
 
-    // MutationObserver для динамических изменений
+    // MutationObserver
     const observer = new MutationObserver(() => {
       addWatchButtonIfNeeded();
     });
@@ -115,7 +114,7 @@
       subtree: true
     });
   } else if (hostname.includes('flcksbr.top')) {
-    // Логика для flcksbr.top (замена div.tgMain)
+    // Логика для flcksbr.top
     const tgMainDiv = document.querySelector('div.tgMain');
     if (!tgMainDiv) {
       console.log('Error: div.tgMain not found on flcksbr.top page.');
