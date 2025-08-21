@@ -3,7 +3,6 @@
 
   let checkTimer = null;
 
-  // Функция для добавления кнопки на kinopoisk.ru
   function addWatchButtonIfNeeded() {
     const path = window.location.pathname;
     if (!path.match(/^\/(film|series)\/\d/)) {
@@ -16,7 +15,6 @@
       return;
     }
 
-    // Поиск элементов
     function checkElements() {
       const h1 = document.querySelector('h1[itemprop="name"]');
       if (!h1) {
@@ -37,13 +35,6 @@
         span.textContent.match(/^\d+\+$/)
       );
       
-      if (!ageSpan) {
-        console.log('Info: Age span not found yet. Retrying...');
-        checkTimer = setTimeout(checkElements, 300);
-        return;
-      }
-
-      // Создание кнопки
       const buttonContainer = document.createElement('div');
       buttonContainer.style.marginTop = '16px';
 
@@ -74,20 +65,23 @@
       });
 
       buttonContainer.appendChild(button);
-      ageSpan.after(buttonContainer);
-      console.log('Info: Button successfully added!');
+
+      if (ageSpan) {
+        ageSpan.after(buttonContainer);
+        console.log('Info: Button successfully added after age span!');
+      } else {
+        subDiv.after(buttonContainer);
+        console.log('Info: Age span not found, but button added after subDiv!');
+      }
     }
 
-    // Очистка таймера
     if (checkTimer) clearTimeout(checkTimer);
     checkTimer = setTimeout(checkElements, 300);
   }
 
   if (hostname.includes('kinopoisk.ru')) {
-    // Первоначальная проверка
     addWatchButtonIfNeeded();
 
-    // Обработчики SPA
     const originalPushState = history.pushState;
     history.pushState = function() {
       originalPushState.apply(this, arguments);
@@ -104,7 +98,6 @@
       addWatchButtonIfNeeded();
     });
 
-    // MutationObserver
     const observer = new MutationObserver(() => {
       addWatchButtonIfNeeded();
     });
@@ -114,7 +107,6 @@
       subtree: true
     });
   } else if (hostname.includes('flcksbr.top')) {
-    // Логика для flcksbr.top
     const tgMainDiv = document.querySelector('div.tgMain');
     if (!tgMainDiv) {
       console.log('Error: div.tgMain not found on flcksbr.top page.');
