@@ -1,1 +1,1 @@
-[preview](preview/readme.html)
+![preview](preview/Preview-Kinopoisk-To-Sspoisk.png)
