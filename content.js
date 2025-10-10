@@ -106,27 +106,14 @@
       childList: true,
       subtree: true
     });
+
   } else if (hostname.includes('flcksbr.top')) {
-    const tgMainDiv = document.querySelector('div.tgMain');
-    if (!tgMainDiv) {
-      console.log('Error: div.tgMain not found on flcksbr.top page.');
-      return;
+    const tgWrapper = document.getElementById('tgWrapper');
+    if (tgWrapper) {
+      tgWrapper.remove();
+      console.log('Info: tgWrapper removed from page.');
+    } else {
+      console.log('Info: tgWrapper not found, nothing to remove.');
     }
-    console.log('Info: div.tgMain found.');
-
-    const link = tgMainDiv.querySelector('a');
-    if (!link) {
-      console.log('Error: <a> element not found inside div.tgMain.');
-      return;
-    }
-    link.href = 'https://t.me/Kinopoisk_to_Sspoisk';
-    console.log('Info: Link href replaced to https://t.me/Kinopoisk_to_Sspoisk.');
-
-    const img = tgMainDiv.querySelector('img');
-    if (!img) {
-      console.log('Error: <img> element not found inside div.tgMain.');
-      return;
-    }
-    img.src = chrome.runtime.getURL('Kinopoisk_to_Sspoisk.png');
-    console.log('Info: Image src replaced to extension\'s Kinopoisk_to_Sspoisk.png.');
-}})();
+  }
+})();
