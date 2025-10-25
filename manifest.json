@@ -1,19 +1,19 @@
 {
   "manifest_version": 3,
   "name": "Kinopoisk to Sspoisk",
-  "version": "1.0",
-  "description": "Добавляет кнопку для открытия страницы на sspoisk.ru для бесплатного просмотра",
+  "version": "1.3",
+  "description": "Добавляет кнопку для бесплатного просмотра",
+  "permissions": [
+    "activeTab"
+  ],
   "content_scripts": [
     {
-      "matches": ["*://*.kinopoisk.ru/*", "*://*.flcksbr.top/*"],
-      "js": ["content.js"]
-    }
-  ],
-  "web_accessible_resources": [
+      "matches": ["*://*.kinopoisk.ru/*"],
+      "js": ["js/kinopoisk.js"]
+    },
     {
-      "resources": ["Kinopoisk_to_Sspoisk.png"],
-      "matches": ["*://*.flcksbr.top/*"]
+      "matches": ["*://*.flcksbr.top/*"],
+      "js": ["js/sspoisk.js"]
     }
-  ],
-  "permissions": []
+  ]
 }
