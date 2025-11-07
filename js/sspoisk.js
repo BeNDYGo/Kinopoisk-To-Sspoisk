@@ -27,7 +27,7 @@ function BackButton() {
         button.style.transform = 'scale(1)';
         button.style.boxShadow = '0 2px 6px rgba(0,0,0,0.1)';
     });
-    
+
     button.addEventListener('click', (e) => {
     const currentUrl = new URL(window.location.href);
     currentUrl.hostname = 'www.kinopoisk.ru';

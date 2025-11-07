@@ -27,7 +27,6 @@ function WatchButton(){
     const target = e.ctrlKey || e.metaKey ? '_blank' : '_self';
     window.open(currentUrl.toString(), target);
     });
-
     return button
 }
 

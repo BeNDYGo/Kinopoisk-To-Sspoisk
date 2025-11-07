@@ -1,1 +1,1 @@
-![](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/Kinopoisk-To-Sspoisk.png)
+![preview](preview/Preview-Kinopoisk-To-Sspoisk.png)
