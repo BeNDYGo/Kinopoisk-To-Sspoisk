@@ -1,0 +1,46 @@
+<label class="btn-fav">
+  <input type="checkbox" hidden>
+  <span class="icon">★</span>
+  <span class="text-off">Смотреть позже</span>
+  <span class="text-on">Сохранено</span>
+</label>
+
+<style>
+.btn-fav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #222;
+  color: #ccc;
+  font-family: system-ui, sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.btn-fav:hover {
+  background: #333;
+}
+
+.btn-fav .icon {
+  font-size: 20px;
+  color: #777;
+  transition: all 0.3s;
+}
+
+.btn-fav .text-on  { display: none; }
+.btn-fav input:checked ~ .text-off { display: none; }
+.btn-fav input:checked ~ .text-on  { display: inline; }
+.btn-fav input:checked ~ .icon {
+  color: #ffcd32;
+  animation: beat 0.6s ease;
+}
+
+@keyframes beat {
+  0%, 100% { transform: scale(1);   }
+  40%      { transform: scale(1.4); }
+}
+</style>

@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.kinopoisk.ru/*"],
-      "js": ["js/kinopoisk.js"]
+      "js": ["js/kinopoisk/kinopoisk.js"]
     },
     {
       "matches": ["*://*.flcksbr.top/*"],
