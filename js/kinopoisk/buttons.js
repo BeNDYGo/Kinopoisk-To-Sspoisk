@@ -1,5 +1,3 @@
-export { watchButton, createWatchLaterButton };
-
 function watchButton(){
     const button = document.createElement('button');
       button.id = 'custom-watch-button';
@@ -32,57 +30,81 @@ function watchButton(){
 
 function createWatchLaterButton() {
     const label = document.createElement("label");
-    label.className = "btn-fav";
+    label.style.display = 'inline-flex';
+    label.style.alignItems = 'center';
+    label.style.gap = '8px';
+    label.style.padding = '8px 14px';
+    label.style.borderRadius = '999px';
+    label.style.background = '#222';
+    label.style.color = '#ccc';
+    label.style.fontFamily = 'system-ui, sans-serif';
+    label.style.fontSize = '15px';
+    label.style.cursor = 'pointer';
+    label.style.userSelect = 'none';
+    label.style.transition = 'all 0.2s ease';
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.hidden = true;
+
+    const icon = document.createElement("span");
+    icon.className = "icon";
+    icon.textContent = "★";
+    icon.style.fontSize = '20px';
+    icon.style.color = '#777';
+    icon.style.transition = 'all 0.3s';
+
+    const textOff = document.createElement("span");
+    textOff.className = "text-off";
+    textOff.textContent = "Смотреть позже";
+
+    const textOn = document.createElement("span");
+    textOn.className = "text-on";
+    textOn.textContent = "Сохранено";
+    textOn.style.display = 'none';
+
+    label.addEventListener('mouseover', () => {
+        label.style.background = '#333';
+    });
+    label.addEventListener('mouseout', () => {
+        label.style.background = '#222';
+    });
+
+    input.addEventListener('change', () => {
+        if (input.checked) {
+            textOff.style.display = 'none';
+            textOn.style.display = 'inline';
+            icon.style.color = '#ffcd32';
+            icon.style.animation = 'beat 0.6s ease';
+        } else {
+            textOff.style.display = 'inline';
+            textOn.style.display = 'none';
+            icon.style.color = '#777';
+        }
+    });
+
+    label.appendChild(input);
+    label.appendChild(icon);
+    label.appendChild(textOff);
+    label.appendChild(textOn);
+
     const style = document.createElement("style");
-    style.id = "watch-later-styles";
-
-    label.innerHTML = `
-        <input type="checkbox" hidden>
-        <span class="icon">★</span>
-        <span class="text-off">Смотреть позже</span>
-        <span class="text-on">Сохранено</span>
-  `;
-
-    style.id = "watch-later-styles";
     style.textContent = `
-        .btn-fav {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: #222;
-        color: #ccc;
-        font-family: system-ui, sans-serif;
-        font-size: 15px;
-        cursor: pointer;
-        user-select: none;
-        transition: all 0.2s ease;
-        }
-
-        .btn-fav:hover {
-        background: #333;
-        }
-
-        .btn-fav .icon {
-        font-size: 20px;
-        color: #777;
-        transition: all 0.3s;
-        }
-
-        .btn-fav .text-on  { display: none; }
-        .btn-fav input:checked ~ .text-off { display: none; }
-        .btn-fav input:checked ~ .text-on  { display: inline; }
-        .btn-fav input:checked ~ .icon {
-        color: #ffcd32;
-        animation: beat 0.6s ease;
-        }
-
         @keyframes beat {
         0%, 100% { transform: scale(1);   }
         40%      { transform: scale(1.4); }
         }
     `;
+    document.head.appendChild(style);
 
     return label;
+}
+
+function createButtonContainer(){
+    const container = document.createElement("div");
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'flex-start';
+    container.style.gap = '8px';
+    return container
 }

@@ -1,7 +1,4 @@
-import watchButton from './buttons.js';
-import createWatchLaterButton from './buttons.js';
-
-const hostname = window.location.hostname;
+//const hostname = window.location.hostname;
 
 function KinopoiskSkript(){
     const url = window.location.href
@@ -16,13 +13,16 @@ function KinopoiskSkript(){
     const subDiv = h1.nextElementSibling;
     const spans = subDiv.querySelectorAll('span');
     const ageSpan = Array.from(spans).find(span => span.textContent.match(/^\d+\+$/));
-    const button = watchButton()
-    const buttonContainer = document.createElement('div');
 
-    //buttonContainer.style.marginTop = '16px';
+    const button = watchButton();
+    const watchLaterButton = createWatchLaterButton();
+    const buttonContainer = createButtonContainer();
+
     buttonContainer.appendChild(button);
     ageSpan.after(buttonContainer);
     console.log('Info: Button successfully added');
+
+    buttonContainer.appendChild(watchLaterButton);
 }
 
 const observer = new MutationObserver(() => {
@@ -30,4 +30,5 @@ const observer = new MutationObserver(() => {
         KinopoiskSkript();
     }
 });
+
 observer.observe(document.body, { childList: true, subtree: true });
