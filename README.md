@@ -1,1 +1,1 @@
-![preview](preview/Preview-Kinopoisk-To-Sspoisk.png)
+тут просто readme
