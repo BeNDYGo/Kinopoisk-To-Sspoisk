@@ -3,7 +3,6 @@ function BackButton() {
     button.id = 'back-button';
     button.textContent = '← Назад';
 
-    // стиль
     button.style.background = '#2A3440';
     button.style.color = '#2f3640';
     button.style.border = '2px solid #444f5cff';

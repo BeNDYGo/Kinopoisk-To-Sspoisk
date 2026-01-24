@@ -35,8 +35,8 @@ function createWatchLaterButton() {
     label.style.gap = '8px';
     label.style.padding = '8px 14px';
     label.style.borderRadius = '999px';
-    label.style.background = '#222';
-    label.style.color = '#ccc';
+    label.style.background = '#ebebebb6';
+    label.style.color = '#000000';
     label.style.fontFamily = 'system-ui, sans-serif';
     label.style.fontSize = '15px';
     label.style.cursor = 'pointer';
@@ -62,13 +62,6 @@ function createWatchLaterButton() {
     textOn.className = "text-on";
     textOn.textContent = "Сохранено";
     textOn.style.display = 'none';
-
-    label.addEventListener('mouseover', () => {
-        label.style.background = '#333';
-    });
-    label.addEventListener('mouseout', () => {
-        label.style.background = '#222';
-    });
 
     input.addEventListener('change', () => {
         if (input.checked) {
@@ -111,68 +104,22 @@ function createButtonContainer(){
 
 function createWatchLaterListButton() {
     const button = document.createElement('button');
-    
-    button.style.position = 'fixed';
-    button.style.bottom = '30px';
-    button.style.right = '30px';
-    button.style.display = 'flex';
-    button.style.alignItems = 'center';
-    button.style.justifyContent = 'center';
-    button.style.width = '56px';
-    button.style.height = '56px';
-    button.style.background = 'linear-gradient(135deg, #f50, #d6bb00)';
-    button.style.borderRadius = '50%';
-    button.style.border = 'none';
-    button.style.boxShadow = '0 4px 12px rgba(255, 85, 0, 0.4)';
-    button.style.cursor = 'pointer';
-    button.style.transition = 'transform 0.2s, box-shadow 0.2s';
-    button.style.color = 'white';
-    button.style.zIndex = '9999';
 
-    // 2. Добавляем иконку (SVG) внутрь кнопки
+    button.style.width = '40px';
+    button.style.height = '40px';
+    button.style.border = 'none';
+    button.style.borderRadius = '50%';
+    button.style.background = '#ff5500';
+    button.style.cursor = 'pointer';
+
+    button.style.alignSelf = 'center';
+    
+    // чтобы было видно
     button.innerHTML = `
         <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #fff; pointer-events: none;">
             <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"/>
         </svg>
     `;
-
-    // 3. Создаем элемент подсказки (вместо CSS ::after)
-    const tooltip = document.createElement('span');
-    tooltip.textContent = "Мой список";
-    
-    // Стили подсказки
-    tooltip.style.position = 'absolute';
-    tooltip.style.right = '70px'; // Сдвигаем влево от кнопки
-    tooltip.style.background = '#333';
-    tooltip.style.padding = '5px 10px';
-    tooltip.style.borderRadius = '4px';
-    tooltip.style.fontSize = '12px';
-    tooltip.style.color = '#fff';
-    tooltip.style.opacity = '0'; // Изначально скрыта
-    tooltip.style.pointerEvents = 'none';
-    tooltip.style.transition = 'opacity 0.2s';
-    tooltip.style.whiteSpace = 'nowrap';
-
-    // Добавляем подсказку внутрь кнопки
-    button.appendChild(tooltip);
-
-    // 4. Обработчики событий (Hover эффекты через JS)
-    button.addEventListener('mouseover', () => {
-        button.style.transform = 'scale(1.1)';
-        button.style.boxShadow = '0 6px 16px rgba(255, 85, 0, 0.6)';
-        tooltip.style.opacity = '1'; // Показываем подсказку
-    });
-
-    button.addEventListener('mouseout', () => {
-        button.style.transform = 'scale(1)';
-        button.style.boxShadow = '0 4px 12px rgba(255, 85, 0, 0.4)';
-        tooltip.style.opacity = '0'; // Скрываем подсказку
-    });
-
-    button.addEventListener('click', () => {
-        const targetUrl = 'https://www.kinopoisk.ru/mykp/folders/'; 
-        window.open(targetUrl, '_blank');
-    });
 
     return button;
 }

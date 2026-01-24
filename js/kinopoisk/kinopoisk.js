@@ -1,12 +1,21 @@
 function KinopoiskSkript(){
+
+    // Кнопка "Смотреть потом"
+    const headDiv = document.querySelector('[class*="styles_userContainer__"]');
+
+    const watchLaterListButton = createWatchLaterListButton();
+    headDiv.appendChild(watchLaterListButton);
+
+    // Проверка на страницу с тайтлом
     const url = window.location.href
+
     if (url === "https://www.kinopoisk.ru/"){
         return
     }
     if (document.getElementById('custom-watch-button')) {
         return;
     }
-    // поиск нужного элемента для встраивания
+    // Создание div рядом с названием тайтла
     const h1 = document.querySelector('h1[itemprop="name"]');
     const subDiv = h1.nextElementSibling;
     const spans = subDiv.querySelectorAll('span');
@@ -22,9 +31,8 @@ function KinopoiskSkript(){
     const watchLaterButton = createWatchLaterButton();
     buttonContainer.appendChild(watchLaterButton);
 
-    // Кнопка "Списки"
-    const watchLaterListButton = createWatchLaterListButton();
-    buttonContainer.appendChild(watchLaterListButton);
+    // Обновление
+    ageSpan.after(buttonContainer);
 }
 
 const observer = new MutationObserver(() => {
