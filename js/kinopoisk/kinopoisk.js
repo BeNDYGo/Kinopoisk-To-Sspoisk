@@ -1,5 +1,3 @@
-//const hostname = window.location.hostname;
-
 function KinopoiskSkript(){
     const url = window.location.href
     if (url === "https://www.kinopoisk.ru/"){
@@ -14,15 +12,19 @@ function KinopoiskSkript(){
     const spans = subDiv.querySelectorAll('span');
     const ageSpan = Array.from(spans).find(span => span.textContent.match(/^\d+\+$/));
 
-    const button = watchButton();
-    const watchLaterButton = createWatchLaterButton();
     const buttonContainer = createButtonContainer();
 
-    buttonContainer.appendChild(button);
-    ageSpan.after(buttonContainer);
-    console.log('Info: Button successfully added');
+    // Кнопка "Смотреть бесплатно"
+    const watchButton = createWatchButton();
+    buttonContainer.appendChild(watchButton);
 
+    // Кнопка "Сохранить в список"
+    const watchLaterButton = createWatchLaterButton();
     buttonContainer.appendChild(watchLaterButton);
+
+    // Кнопка "Списки"
+    const watchLaterListButton = createWatchLaterListButton();
+    buttonContainer.appendChild(watchLaterListButton);
 }
 
 const observer = new MutationObserver(() => {

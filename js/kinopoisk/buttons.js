@@ -1,4 +1,4 @@
-function watchButton(){
+function createWatchButton(){
     const button = document.createElement('button');
       button.id = 'custom-watch-button';
       button.textContent = 'Смотреть бесплатно';
@@ -107,4 +107,72 @@ function createButtonContainer(){
     container.style.alignItems = 'flex-start';
     container.style.gap = '8px';
     return container
+}
+
+function createWatchLaterListButton() {
+    const button = document.createElement('button');
+    
+    button.style.position = 'fixed';
+    button.style.bottom = '30px';
+    button.style.right = '30px';
+    button.style.display = 'flex';
+    button.style.alignItems = 'center';
+    button.style.justifyContent = 'center';
+    button.style.width = '56px';
+    button.style.height = '56px';
+    button.style.background = 'linear-gradient(135deg, #f50, #d6bb00)';
+    button.style.borderRadius = '50%';
+    button.style.border = 'none';
+    button.style.boxShadow = '0 4px 12px rgba(255, 85, 0, 0.4)';
+    button.style.cursor = 'pointer';
+    button.style.transition = 'transform 0.2s, box-shadow 0.2s';
+    button.style.color = 'white';
+    button.style.zIndex = '9999';
+
+    // 2. Добавляем иконку (SVG) внутрь кнопки
+    button.innerHTML = `
+        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #fff; pointer-events: none;">
+            <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"/>
+        </svg>
+    `;
+
+    // 3. Создаем элемент подсказки (вместо CSS ::after)
+    const tooltip = document.createElement('span');
+    tooltip.textContent = "Мой список";
+    
+    // Стили подсказки
+    tooltip.style.position = 'absolute';
+    tooltip.style.right = '70px'; // Сдвигаем влево от кнопки
+    tooltip.style.background = '#333';
+    tooltip.style.padding = '5px 10px';
+    tooltip.style.borderRadius = '4px';
+    tooltip.style.fontSize = '12px';
+    tooltip.style.color = '#fff';
+    tooltip.style.opacity = '0'; // Изначально скрыта
+    tooltip.style.pointerEvents = 'none';
+    tooltip.style.transition = 'opacity 0.2s';
+    tooltip.style.whiteSpace = 'nowrap';
+
+    // Добавляем подсказку внутрь кнопки
+    button.appendChild(tooltip);
+
+    // 4. Обработчики событий (Hover эффекты через JS)
+    button.addEventListener('mouseover', () => {
+        button.style.transform = 'scale(1.1)';
+        button.style.boxShadow = '0 6px 16px rgba(255, 85, 0, 0.6)';
+        tooltip.style.opacity = '1'; // Показываем подсказку
+    });
+
+    button.addEventListener('mouseout', () => {
+        button.style.transform = 'scale(1)';
+        button.style.boxShadow = '0 4px 12px rgba(255, 85, 0, 0.4)';
+        tooltip.style.opacity = '0'; // Скрываем подсказку
+    });
+
+    button.addEventListener('click', () => {
+        const targetUrl = 'https://www.kinopoisk.ru/mykp/folders/'; 
+        window.open(targetUrl, '_blank');
+    });
+
+    return button;
 }

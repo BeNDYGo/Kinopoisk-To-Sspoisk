@@ -1,46 +1,194 @@
-<label class="btn-fav">
-  <input type="checkbox" hidden>
-  <span class="icon">★</span>
-  <span class="text-off">Смотреть позже</span>
-  <span class="text-on">Сохранено</span>
-</label>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кнопка "Открыть список"</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #fff;
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            margin: 0;
+        }
 
-<style>
-.btn-fav {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #222;
-  color: #ccc;
-  font-family: system-ui, sans-serif;
-  font-size: 15px;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.2s ease;
-}
+        h2 {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-.btn-fav:hover {
-  background: #333;
-}
+        .container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.btn-fav .icon {
-  font-size: 20px;
-  color: #777;
-  transition: all 0.3s;
-}
+        /* --- ВАРИАНТ 1: Floating Action Button (FAB) --- 
+           Круглая кнопка, висит в углу экрана. 
+           Самый популярный вариант для таких задач.
+        */
+        .fab-btn {
+            /* В реальном коде будет position: fixed; bottom: 30px; right: 30px; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #f50, #d6bb00); /* Оранжевый акцент */
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 4px 12px rgba(255, 85, 0, 0.4);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            z-index: 9999;
+        }
 
-.btn-fav .text-on  { display: none; }
-.btn-fav input:checked ~ .text-off { display: none; }
-.btn-fav input:checked ~ .text-on  { display: inline; }
-.btn-fav input:checked ~ .icon {
-  color: #ffcd32;
-  animation: beat 0.6s ease;
-}
+        .fab-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(255, 85, 0, 0.6);
+        }
 
-@keyframes beat {
-  0%, 100% { transform: scale(1);   }
-  40%      { transform: scale(1.4); }
-}
-</style>
+        .fab-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: #fff;
+        }
+        
+        /* Тултип (подсказка) при наведении */
+        .fab-btn::after {
+            content: "Мой список";
+            position: absolute;
+            right: 70px;
+            background: #333;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        .fab-btn:hover::after {
+            opacity: 1;
+        }
+
+
+        /* --- ВАРИАНТ 2: Capsule (Таблетка) --- 
+           Хорошо смотрится, если вставлять рядом с логотипом или поиском.
+        */
+        .capsule-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #222;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            border-radius: 99px;
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .capsule-btn:hover {
+            background: #333;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .capsule-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+
+        /* --- ВАРИАНТ 3: Sidebar Tab (Закладка сбоку) --- 
+           Крепится к краю экрана. Занимает минимум места.
+        */
+        .sidebar-btn {
+            /* В реальном коде position: fixed; right: 0; top: 20%; */
+            display: flex;
+            align-items: center;
+            padding: 12px 16px 12px 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-right: none;
+            border-radius: 8px 0 0 8px; /* Скругление только слева */
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 8px;
+        }
+
+        .sidebar-btn:hover {
+            background: #252525;
+            color: #f50; /* Оранжевый при наведении */
+            padding-right: 20px; /* Эффект "выезжания" */
+        }
+
+        .sidebar-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .sidebar-btn span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Вариант 1: Плавающая кнопка (Фиксирована в углу)</h2>
+        <!-- Имитация кнопки в контексте -->
+        <button class="fab-btn" onclick="alert('Переход в папку Буду смотреть')">
+            <!-- Иконка списка/папки -->
+            <svg viewBox="0 0 24 24">
+                <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <h2>Вариант 2: Кнопка-таблетка (Для шапки сайта)</h2>
+        <a href="#" class="capsule-btn" onclick="alert('Переход в папку Буду смотреть')">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Буду смотреть</span>
+        </a>
+    </div>
+
+    <div class="container" style="align-items: flex-end; padding-right: 50px;">
+        <h2>Вариант 3: Боковая закладка (Крепится к краю)</h2>
+        <div class="sidebar-btn" onclick="alert('Переход в папку Буду смотреть')">
+            <svg viewBox="0 0 24 24">
+                <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+            </svg>
+            <span>Списки</span>
+        </div>
+    </div>
+
+</body>
+</html>
