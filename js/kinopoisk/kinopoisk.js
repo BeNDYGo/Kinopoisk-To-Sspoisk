@@ -1,5 +1,7 @@
 function KinopoiskSkript(){
 
+    // Text Text_typography_secondary UserId-SecondLine Subname
+    
     // Кнопка "Смотреть потом"
     const headDiv = document.querySelector('[class*="styles_userContainer__"]');
 
@@ -12,9 +14,12 @@ function KinopoiskSkript(){
     if (url === "https://www.kinopoisk.ru/"){
         return
     }
+
     if (document.getElementById('custom-watch-button')) {
+        console.log("кнопка уже есть")
         return;
     }
+
     // Создание div рядом с названием тайтла
     const h1 = document.querySelector('h1[itemprop="name"]');
     const subDiv = h1.nextElementSibling;
@@ -33,6 +38,15 @@ function KinopoiskSkript(){
 
     // Обновление
     ageSpan.after(buttonContainer);
+}
+
+// только благодаря тому что снизу работает. Храни господь chatgpt!!
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        KinopoiskSkript();
+    });
+} else {
+    KinopoiskSkript();
 }
 
 const observer = new MutationObserver(() => {

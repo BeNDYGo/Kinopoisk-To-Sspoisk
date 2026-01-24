@@ -102,6 +102,72 @@ function createButtonContainer(){
     return container
 }
 
+function createWatchLaterModal() {
+    // затемнение фона
+    const overlay = document.createElement('div');
+    overlay.id = 'kp-watch-later-overlay';
+
+    Object.assign(overlay.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100vw',
+        height: '100vh',
+        background: 'rgba(0,0,0,0.5)',
+        zIndex: '9999',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    });
+
+    // само окно
+    const modal = document.createElement('div');
+
+    Object.assign(modal.style, {
+        width: '400px',
+        height: '300px',
+        background: '#1f1f1f',
+        borderRadius: '12px',
+        padding: '16px',
+        color: '#fff',
+        position: 'relative'
+    });
+
+    modal.innerHTML = `
+        <h3 style="margin-top:0;">Буду смотреть</h3>
+        <div id="watch-later-content">
+            Пока пусто 👀
+        </div>
+        <button id="close-watch-later"
+            style="
+                position:absolute;
+                top:8px;
+                right:8px;
+                background:none;
+                border:none;
+                color:#fff;
+                font-size:20px;
+                cursor:pointer;
+            "
+        >✕</button>
+    `;
+
+    overlay.appendChild(modal);
+
+    // закрытие
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.remove();
+        }
+    });
+
+    modal.querySelector('#close-watch-later').onclick = () => {
+        overlay.remove();
+    };
+
+    return overlay;
+}
+
 function createWatchLaterListButton() {
     const button = document.createElement('button');
 
@@ -114,12 +180,17 @@ function createWatchLaterListButton() {
 
     button.style.alignSelf = 'center';
     
-    // чтобы было видно
     button.innerHTML = `
         <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #fff; pointer-events: none;">
             <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"/>
         </svg>
     `;
+    button.addEventListener('click', () => {
+        // защита от повторного открытия
+        if (document.getElementById('kp-watch-later-overlay')) return;
 
+        document.body.appendChild(createWatchLaterModal());
+    });
+    
     return button;
 }
