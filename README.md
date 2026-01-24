@@ -12,16 +12,18 @@
 
 > ### Kinopoisk
 > Расширение добавляет на сайт **kinopoisk** кнопку "**Смотреть бесплатно**".
-> Этак кнопка по сути просто заменять "*kino*" в url на "*ss*"
+> Эта кнопка заменять "*kino*" в url на "*ss*"
 
 > ### SSpoisk
-> После нажатия открывается сайт **flcksbr** с открытым фильмом. Добавляется кнопка **Назад**. Она, неповерите, открывает фильм **обратно**
-> Для более удобного просмотра кнопка **прозрачная**, если не наводить на нее мышку
+> После нажатия открывается сайт **flcksbr** с фильмом. Добавляется кнопка **Назад**. Она открывает фильм **обратно**
+> 
+> Для более приятного просмотра кнопка **прозрачная**, если не наводить на нее мышку
 
 ---
 # Примеры:
 
 ![Screenshot_1](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_1.png)
+
 ![Screenshot_2](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_2.png)
 ![Screenshot_3](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_3.png)
 
@@ -30,4 +32,4 @@
 
 - https://t.me/KinipoiskToSspoisk
 - bendygo6@gmail.com
-
+---
