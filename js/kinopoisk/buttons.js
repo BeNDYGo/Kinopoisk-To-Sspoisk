@@ -1,3 +1,15 @@
+// Главный контейнер с кнопками
+function createButtonContainer(){
+    const container = document.createElement("div");
+    container.style.display = 'flex';
+    container.style.padding = "16px"
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'flex-start';
+    container.style.gap = '8px';
+    return container
+}
+
+//  Кнопа смотреть бесплатно
 function createWatchButton(){
     const button = document.createElement('button');
       button.id = 'custom-watch-button';
@@ -28,6 +40,7 @@ function createWatchButton(){
     return button
 }
 
+// Кнопка смотреть позже
 function createWatchLaterButton() {
     const label = document.createElement("label");
     label.style.display = 'inline-flex';
@@ -90,18 +103,17 @@ function createWatchLaterButton() {
     `;
     document.head.appendChild(style);
 
+    label.addEventListener('click', () => {
+        const currentUrl = new URL(window.location.href);
+        const list = document.getElementById('kp-watch-later-overlay');
+        list.innerHTML = <li>currentUrl</li>
+
+    });
+
     return label;
 }
 
-function createButtonContainer(){
-    const container = document.createElement("div");
-    container.style.display = 'flex';
-    container.style.flexDirection = 'column';
-    container.style.alignItems = 'flex-start';
-    container.style.gap = '8px';
-    return container
-}
-
+// Модуль со списком фильмов из смотреть позже
 function createWatchLaterModal() {
     // затемнение фона
     const overlay = document.createElement('div');
@@ -168,6 +180,7 @@ function createWatchLaterModal() {
     return overlay;
 }
 
+// Кнопка в шапке 
 function createWatchLaterListButton() {
     const button = document.createElement('button');
 
