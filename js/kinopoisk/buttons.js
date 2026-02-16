@@ -57,10 +57,6 @@ function createWatchLaterButton() {
 
         if (!existingItem) {
             // Добавляем фильм в список
-            if (content.textContent.trim() === 'Пока пусто') {
-                content.textContent = '';
-            }
-
             const li = document.createElement('li');
             li.textContent = currentUrl;
             li.dataset.ktsWatchLaterUrl = currentUrl;
@@ -70,10 +66,6 @@ function createWatchLaterButton() {
         } else {
             // Удаляем фильм из списка
             existingItem.remove();
-
-            if (!content.querySelector('li')) {
-                content.textContent = 'Пока пусто';
-            }
 
             button.textContent = 'Смотреть позже';
         }
@@ -100,7 +92,7 @@ function createWatchLaterModal() {
 
     modal.innerHTML = `
         <h3>Буду смотреть</h3>
-        <div id="watch-later-content">Пока пусто</div>
+        <div id="watch-later-content"></div>
         <button class="kts-close-btn">✕</button>
     `;
 
