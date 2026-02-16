@@ -2,7 +2,6 @@ function KinopoiskSkript() {
     const headDiv = document.querySelector('[class*="styles_userContainer__"]');
     if (!headDiv) return;
 
-    // Кнопка списка в шапке (добавляем один раз)
     if (!headDiv.querySelector('.kts-header-btn')) {
         headDiv.appendChild(createWatchLaterListButton());
     }

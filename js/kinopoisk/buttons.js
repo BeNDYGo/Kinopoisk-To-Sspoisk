@@ -24,109 +24,58 @@ function createWatchButton() {
 
 // Кнопка «Смотреть позже»
 function createWatchLaterButton() {
-    // Обычная кнопка вместо label, чтобы не было двойного клика
     const button = document.createElement('button');
-    // Используем тот же класс, что и у старого label, чтобы размеры и внешний вид были примерно теми же
     button.className = 'kts-watch-later-label';
     button.type = 'button';
     button.textContent = 'Смотреть позже';
 
     button.addEventListener('click', () => {
-        let overlay = document.getElementById('kp-watch-later-overlay');
-        if (!overlay) {
-            overlay = createWatchLaterModal();
-            document.body.appendChild(overlay);
-        }
+        const panel = getOrCreateWatchLaterPanel();
+        const list = panel.querySelector('#watch-later-content');
+        if (!list) return;
 
-        const modal = document.getElementById('kp-watch-later-modal');
-        if (!modal) return;
-
-        const content = modal.querySelector('#watch-later-content');
-        if (!content) return;
-
-        const currentUrl = window.location.href;
-
-        // Ищем, есть ли уже эта ссылка в списке
-        let existingItem = null;
-        const items = content.querySelectorAll('li');
-        items.forEach((item) => {
-            if (item.dataset.ktsWatchLaterUrl === currentUrl) {
-                existingItem = item;
-            }
-        });
-
-        if (!existingItem) {
-            // Добавляем фильм в список
-            const li = document.createElement('li');
-            li.textContent = currentUrl;
-            li.dataset.ktsWatchLaterUrl = currentUrl;
-            content.appendChild(li);
-
-            button.textContent = 'Не буду смотреть';
-        } else {
-            // Удаляем фильм из списка
-            existingItem.remove();
-
-            button.textContent = 'Смотреть позже';
-        }
-
-        // После добавления/удаления не открываем модалку сразу — её открывает кнопка в шапке
-        overlay.style.display = 'none';
+        const li = document.createElement('li');
+        li.textContent = window.location.href;
+        list.appendChild(li);
     });
 
     return button;
 }
 
-// Модальное окно «Буду смотреть»
-function createWatchLaterModal() {
-    const existing = document.getElementById('kp-watch-later-overlay');
-    if (existing) return existing;
+function getOrCreateWatchLaterPanel() {
+    let panel = document.getElementById('kp-watch-later-panel');
+    if (panel) return panel;
 
-    const overlay = document.createElement('div');
-    overlay.id = 'kp-watch-later-overlay';
-    overlay.className = 'kts-overlay';
+    panel = document.createElement('div');
+    panel.id = 'kp-watch-later-panel';
+    panel.className = 'kts-watch-later-panel';
 
-    const modal = document.createElement('div');
-    modal.id = 'kp-watch-later-modal';
-    modal.className = 'kts-modal';
+    const list = document.createElement('ul');
+    list.id = 'watch-later-content';
+    list.className = 'kts-watch-later-content';
 
-    modal.innerHTML = `
-        <h3>Буду смотреть</h3>
-        <div id="watch-later-content"></div>
-        <button class="kts-close-btn">✕</button>
-    `;
+    panel.appendChild(list);
+    document.body.appendChild(panel);
 
-    overlay.appendChild(modal);
-
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) overlay.style.display = 'none';
-    });
-
-    modal.querySelector('.kts-close-btn').addEventListener('click', () => {
-        overlay.style.display = 'none';
-    });
-
-    return overlay;
+    return panel;
 }
 
 // Кнопка списка в шапке сайта
 function createWatchLaterListButton() {
     const button = document.createElement('button');
+    button.type = 'button';
     button.className = 'kts-header-btn';
 
     button.innerHTML = `
-        <svg viewBox="0 0 24 24">
-            <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"/>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"></path>
         </svg>
     `;
 
     button.addEventListener('click', () => {
-        let overlay = document.getElementById('kp-watch-later-overlay');
-        if (!overlay) {
-            overlay = createWatchLaterModal();
-            document.body.appendChild(overlay);
-        }
-        overlay.style.display = '';
+        const panel = getOrCreateWatchLaterPanel();
+        const isOpen = panel.classList.contains('kts-watch-later-panel--open');
+        panel.classList.toggle('kts-watch-later-panel--open', !isOpen);
     });
 
     return button;
