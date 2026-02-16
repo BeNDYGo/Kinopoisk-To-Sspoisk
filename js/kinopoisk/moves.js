@@ -17,12 +17,18 @@ function watchLaterItem(movie) {
     // Кнопка удаления
     const removeBtn = document.createElement('button')
     removeBtn.className = 'kts-watch-later-remove'
-    removeBtn.textContent = 'Удалить'
 
-    // Кнопка удалить
-    removeBtn.addEventListener('click', () => {
+
+    // Кнопка удалить (останавливает всплытие события)
+    removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation() // Остановка обработчика перехода на тайтл
         li.remove()
         updateWhatchLaterButton()
+    })
+
+    // Клик по элементу фильма для перехода на страницу
+    li.addEventListener('click', (e) => {
+        window.location.href = movie.url
     })
 
     li.appendChild(img)
@@ -34,6 +40,7 @@ function watchLaterItem(movie) {
 
 function updateWhatchLaterButton() {
     const button = document.getElementById('whatch-later-button')
+    if (!button) return
 
     const panel = WatchLaterPanel()
     const list = panel.querySelector('#watch-later-content')

@@ -30,18 +30,21 @@
 /* ===== Кнопка «Смотреть позже» ===== */
 
 .kts-watch-later-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: #ebebebb6;
     color: #000;
-    font-family: system-ui, sans-serif;
-    font-size: 15px;
+    background: #d4d4d4;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
-    user-select: none;
-    transition: all 0.2s ease;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.kts-watch-later-label:hover {
+    background: #c0c0c0;
+    transform: scale(1.1);
 }
 
 .kts-watch-later-icon {
@@ -82,7 +85,7 @@
     pointer-events: none;
 }
 
-/* ===== Боковое меню «Смотреть позже» ===== */
+/* ===== Боковое меню «Смотреть позже» (тёмная тема) ===== */
 
 .kts-watch-later-panel {
     position: fixed;
@@ -90,19 +93,68 @@
     left: 50%;
     transform: translate(-50%, -50%);
     min-width: 600px;
+    max-width: 800px;
     min-height: 400px;
     max-height: 70vh;
-    background: #1f1f1f;
-    border-radius: 12px;
-    padding: 12px 16px;
-    color: #fff;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    background: #1e1e1e;
+    border-radius: 16px;
+    padding: 24px;
+    color: #e0e0e0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     display: none;
     z-index: 9999;
+    overflow: hidden;
 }
 
 .kts-watch-later-panel--open {
     display: block;
+}
+
+.kts-watch-later-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.kts-watch-later-close {
+    background: none;
+    border: none;
+    color: #9e9e9e;
+    cursor: pointer;
+    padding: 4px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.kts-watch-later-close::before {
+    content: '×';
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 300;
+}
+
+.kts-watch-later-close:hover {
+    color: #ff6b35;
+    background-color: rgba(255, 107, 53, 0.15);
+    transform: scale(1.1);
+}
+
+.kts-watch-later-header-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
 }
 
 .kts-watch-later-content {
@@ -111,11 +163,95 @@
     padding: 0;
     max-height: 56vh;
     overflow-y: auto;
-    font-size: 13px;
+    padding-right: 4px;
 }
 
-.kts-watch-later-content li {
-    padding: 4px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    word-break: break-all;
+/* Кастомный скроллбар (тёмный) */
+.kts-watch-later-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.kts-watch-later-content::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 3px;
+}
+
+.kts-watch-later-content::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.kts-watch-later-content::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+.kts-watch-later-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin: 0;
+    border-bottom: 1px solid #333;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.kts-watch-later-item:hover {
+    background-color: #2a2a2a;
+}
+
+.kts-watch-later-item:last-child {
+    border-bottom: none;
+}
+
+.kts-watch-later-item img {
+    width: 60px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.kts-watch-later-title {
+    flex: 1;
+    font-size: 16px;
+    color: #e0e0e0;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.kts-watch-later-remove {
+    background: none;
+    border: none;
+    color: #9e9e9e;
+    cursor: pointer;
+    padding: 6px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-left: auto;
+    border-radius: 4px;
+}
+
+.kts-watch-later-remove:hover {
+    color: #ff6b35;
+    background-color: rgba(255, 107, 53, 0.15);
+    transform: scale(1.15);
+}
+
+.kts-watch-later-remove::before {
+    content: '×';
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 300;
 }

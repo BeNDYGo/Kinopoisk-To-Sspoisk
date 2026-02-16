@@ -85,20 +85,22 @@ function WatchLaterPanel() {
 
     // Хедер панели
     const header = document.createElement('div')
-
-    // Заголовок панели
-    const title = document.createElement('span')
-    title.textContent = 'Смотреть позже'
+    header.className = 'kts-watch-later-header'
 
     // Кнопка закрытия панели
     const closeButton = document.createElement('button')
-    closeButton.textContent = '×'
+    closeButton.className = 'kts-watch-later-close'
     closeButton.addEventListener('click', () => {
         // Удаление
         panel.classList.remove('kts-watch-later-panel--open')
         // Обновление надписи на кнопке
         updateWhatchLaterButton()
     })
+
+    // Заголовок панели
+    const title = document.createElement('span')
+    title.className = 'kts-watch-later-header-title'
+    title.textContent = 'Смотреть позже'
 
     header.appendChild(title)
     header.appendChild(closeButton)

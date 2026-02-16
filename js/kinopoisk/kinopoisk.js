@@ -15,17 +15,13 @@ function KinopoiskSkript() {
 
     const subDiv = h1.nextElementSibling
     if (!subDiv) return
-
-    const spans = subDiv.querySelectorAll('span')
-    const ageSpan = Array.from(spans).find(span => span.textContent.match(/^\d+\+$/))
-    if (!ageSpan) return
-
+    
     // Контейнер с кнопками
     const buttonContainer = ButtonContainer()
     buttonContainer.appendChild(WatchButton())
     buttonContainer.appendChild(WatchLaterButton())
 
-    ageSpan.after(buttonContainer)
+    subDiv.after(buttonContainer)
 }
 
 // Первый запуск (document_idle гарантирует наличие DOM)
