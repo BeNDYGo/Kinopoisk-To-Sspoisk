@@ -27,7 +27,7 @@
     transform: scale(1.1);
 }
 
-/* ===== Лейбл «Смотреть позже» ===== */
+/* ===== Кнопка «Смотреть позже» ===== */
 
 .kts-watch-later-label {
     display: inline-flex;
@@ -82,13 +82,15 @@
     pointer-events: none;
 }
 
-/* ===== Боковое меню «Буду смотреть» (MVP) ===== */
+/* ===== Боковое меню «Смотреть позже» ===== */
 
 .kts-watch-later-panel {
     position: fixed;
-    top: 80px;
-    right: 24px;
-    width: 320px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 600px;
+    min-height: 400px;
     max-height: 70vh;
     background: #1f1f1f;
     border-radius: 12px;

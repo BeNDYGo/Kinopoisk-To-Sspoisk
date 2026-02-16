@@ -1,82 +1,138 @@
 // Контейнер кнопок на странице фильма
-function createButtonContainer() {
-    const container = document.createElement('div');
-    container.className = 'kts-btn-container';
-    return container;
+function ButtonContainer() {
+    const container = document.createElement('div')
+    container.className = 'kts-btn-container'
+    return container
 }
 
 // Кнопка «Смотреть бесплатно»
-function createWatchButton() {
-    const button = document.createElement('button');
-    button.id = 'custom-watch-button';
-    button.className = 'kts-watch-btn';
-    button.textContent = 'Смотреть бесплатно';
+function WatchButton() {
+    const button = document.createElement('button')
+    button.id = 'custom-watch-button'
+    button.className = 'kts-watch-btn'
+    button.textContent = 'Смотреть бесплатно'
 
     button.addEventListener('click', (e) => {
-        const url = new URL(window.location.href);
-        url.hostname = 'flcksbr.top';
-        const target = e.ctrlKey || e.metaKey ? '_blank' : '_self';
-        window.open(url.toString(), target);
-    });
+        const url = new URL(window.location.href)
+        url.hostname = 'flcksbr.top'
+        const target = e.ctrlKey || e.metaKey ? '_blank' : '_self'
+        window.open(url.toString(), target)
+    })
 
-    return button;
+    return button
 }
 
 // Кнопка «Смотреть позже»
-function createWatchLaterButton() {
-    const button = document.createElement('button');
-    button.className = 'kts-watch-later-label';
-    button.type = 'button';
-    button.textContent = 'Смотреть позже';
+function WatchLaterButton() {
+    const button = document.createElement('button')
+    button.id = 'whatch-later-button'
+    button.className = 'kts-watch-later-label'
+    button.type = 'button'
+    
+    // Проверка на наличие фильма в списке
+    const panel = WatchLaterPanel()
+    const list = panel.querySelector('#watch-later-content')
 
+    const currentUrl = window.location.href;
+    const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
+        .find(item => item.dataset.id === currentUrl)
+
+    // Текст в зависимости от наличия
+    if (existingItem) {
+        button.textContent = 'Не буду смотреть'
+    } else {
+        button.textContent = 'Смотреть позже'
+    }
+
+    // Обработчик
     button.addEventListener('click', () => {
-        const panel = getOrCreateWatchLaterPanel();
-        const list = panel.querySelector('#watch-later-content');
-        if (!list) return;
-
-        const li = document.createElement('li');
-        li.textContent = window.location.href;
-        list.appendChild(li);
-    });
-
-    return button;
+        // Проверка на наличие в списке
+        const currentUrl = window.location.href;
+        const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
+            .find(item => item.dataset.id === currentUrl)
+        
+        if (existingItem) {
+            // Удаление из списка
+            existingItem.remove()
+            button.textContent = 'Смотреть позже'
+        } else {
+            // Добавление в список
+            const openMovie = {
+                url: currentUrl,
+                poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
+                title: document.querySelector('h1[itemprop="name"]').textContent
+            }
+            const moviesList = document.getElementById('watch-later-content')
+            const liMovie = watchLaterItem(openMovie)
+            moviesList.appendChild(liMovie)
+            button.textContent = 'Не буду смотреть'
+        }
+    })
+    return button
 }
 
-function getOrCreateWatchLaterPanel() {
-    let panel = document.getElementById('kp-watch-later-panel');
-    if (panel) return panel;
+// ПАНЕЛЬ с отложенными фильмами
+function WatchLaterPanel() {
+    // Проверка на наличие
+    let panel = document.getElementById('kp-watch-later-panel')
+    if (panel) {
+        return panel
+    }
+    // Создание панели
+    panel = document.createElement('div')
+    panel.id = 'kp-watch-later-panel'
+    panel.className = 'kts-watch-later-panel'
 
-    panel = document.createElement('div');
-    panel.id = 'kp-watch-later-panel';
-    panel.className = 'kts-watch-later-panel';
+    // Хедер панели
+    const header = document.createElement('div')
 
-    const list = document.createElement('ul');
-    list.id = 'watch-later-content';
-    list.className = 'kts-watch-later-content';
+    // Заголовок панели
+    const title = document.createElement('span')
+    title.textContent = 'Смотреть позже'
 
-    panel.appendChild(list);
-    document.body.appendChild(panel);
+    // Кнопка закрытия панели
+    const closeButton = document.createElement('button')
+    closeButton.textContent = '×'
+    closeButton.addEventListener('click', () => {
+        // Удаление
+        panel.classList.remove('kts-watch-later-panel--open')
+        // Обновление надписи на кнопке
+        updateWhatchLaterButton()
+    })
 
-    return panel;
+    header.appendChild(title)
+    header.appendChild(closeButton)
+    panel.appendChild(header)
+
+    // Список фильмов
+    const list = document.createElement('ul')
+    list.id = 'watch-later-content'
+    list.className = 'kts-watch-later-content'
+
+    panel.appendChild(list)
+    document.body.appendChild(panel)
+
+    return panel
 }
 
-// Кнопка списка в шапке сайта
-function createWatchLaterListButton() {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'kts-header-btn';
+// Кнопка в шапке со списком
+function WatchLaterListButton() {
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'kts-header-btn'
 
     button.innerHTML = `
         <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"></path>
         </svg>
-    `;
+    `
 
     button.addEventListener('click', () => {
-        const panel = getOrCreateWatchLaterPanel();
-        const isOpen = panel.classList.contains('kts-watch-later-panel--open');
-        panel.classList.toggle('kts-watch-later-panel--open', !isOpen);
-    });
+        const panel =WatchLaterPanel()
+        const isOpen = panel.classList.contains('kts-watch-later-panel--open')
+        panel.classList.toggle('kts-watch-later-panel--open', !isOpen)
+    })
 
-    return button;
+    return button
 }
+
