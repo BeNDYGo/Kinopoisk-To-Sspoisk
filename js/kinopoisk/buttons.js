@@ -1,209 +1,141 @@
-// Главный контейнер с кнопками
-function createButtonContainer(){
-    const container = document.createElement("div");
-    container.style.display = 'flex';
-    container.style.padding = "16px"
-    container.style.flexDirection = 'column';
-    container.style.alignItems = 'flex-start';
-    container.style.gap = '8px';
-    return container
+// Контейнер кнопок на странице фильма
+function createButtonContainer() {
+    const container = document.createElement('div');
+    container.className = 'kts-btn-container';
+    return container;
 }
 
-//  Кнопа смотреть бесплатно
-function createWatchButton(){
+// Кнопка «Смотреть бесплатно»
+function createWatchButton() {
     const button = document.createElement('button');
-      button.id = 'custom-watch-button';
-      button.textContent = 'Смотреть бесплатно';
-      button.style.color = '#fff';
-      button.style.background = 'linear-gradient(135deg, #f50 69.93%, #d6bb00 100%)';
-      button.style.transition = 'background 0.3s ease, transform 0.3s ease';
-      button.style.border = 'none';
-      button.style.borderRadius = '8px';
-      button.style.padding = '16px 32px';
-      button.style.fontSize = '20px';
-      button.style.fontWeight = 'bold';
-      button.style.cursor = 'pointer';
-      button.style.display = 'inline-block';
+    button.id = 'custom-watch-button';
+    button.className = 'kts-watch-btn';
+    button.textContent = 'Смотреть бесплатно';
 
-    button.addEventListener('mouseover', () => {
-        button.style.transform = 'scale(1.1)';
-    });
-    button.addEventListener('mouseout', () => {
-        button.style.transform = 'scale(1)';
-    });
     button.addEventListener('click', (e) => {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.hostname = 'flcksbr.top';
+        const url = new URL(window.location.href);
+        url.hostname = 'flcksbr.top';
         const target = e.ctrlKey || e.metaKey ? '_blank' : '_self';
-        window.open(currentUrl.toString(), target);
+        window.open(url.toString(), target);
     });
-    return button
+
+    return button;
 }
 
-// Кнопка смотреть позже
+// Кнопка «Смотреть позже»
 function createWatchLaterButton() {
-    const label = document.createElement("label");
-    label.style.display = 'inline-flex';
-    label.style.alignItems = 'center';
-    label.style.gap = '8px';
-    label.style.padding = '8px 14px';
-    label.style.borderRadius = '999px';
-    label.style.background = '#ebebebb6';
-    label.style.color = '#000000';
-    label.style.fontFamily = 'system-ui, sans-serif';
-    label.style.fontSize = '15px';
-    label.style.cursor = 'pointer';
-    label.style.userSelect = 'none';
-    label.style.transition = 'all 0.2s ease';
+    // Обычная кнопка вместо label, чтобы не было двойного клика
+    const button = document.createElement('button');
+    // Используем тот же класс, что и у старого label, чтобы размеры и внешний вид были примерно теми же
+    button.className = 'kts-watch-later-label';
+    button.type = 'button';
+    button.textContent = 'Смотреть позже';
 
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.hidden = true;
+    button.addEventListener('click', () => {
+        let overlay = document.getElementById('kp-watch-later-overlay');
+        if (!overlay) {
+            overlay = createWatchLaterModal();
+            document.body.appendChild(overlay);
+        }
 
-    const icon = document.createElement("span");
-    icon.className = "icon";
-    icon.textContent = "★";
-    icon.style.fontSize = '20px';
-    icon.style.color = '#777';
-    icon.style.transition = 'all 0.3s';
+        const modal = document.getElementById('kp-watch-later-modal');
+        if (!modal) return;
 
-    const textOff = document.createElement("span");
-    textOff.className = "text-off";
-    textOff.textContent = "Смотреть позже";
+        const content = modal.querySelector('#watch-later-content');
+        if (!content) return;
 
-    const textOn = document.createElement("span");
-    textOn.className = "text-on";
-    textOn.textContent = "Сохранено";
-    textOn.style.display = 'none';
+        const currentUrl = window.location.href;
 
-    input.addEventListener('change', () => {
-        if (input.checked) {
-            textOff.style.display = 'none';
-            textOn.style.display = 'inline';
-            icon.style.color = '#ffcd32';
-            icon.style.animation = 'beat 0.6s ease';
+        // Ищем, есть ли уже эта ссылка в списке
+        let existingItem = null;
+        const items = content.querySelectorAll('li');
+        items.forEach((item) => {
+            if (item.dataset.ktsWatchLaterUrl === currentUrl) {
+                existingItem = item;
+            }
+        });
+
+        if (!existingItem) {
+            // Добавляем фильм в список
+            if (content.textContent.trim() === 'Пока пусто') {
+                content.textContent = '';
+            }
+
+            const li = document.createElement('li');
+            li.textContent = currentUrl;
+            li.dataset.ktsWatchLaterUrl = currentUrl;
+            content.appendChild(li);
+
+            button.textContent = 'Не буду смотреть';
         } else {
-            textOff.style.display = 'inline';
-            textOn.style.display = 'none';
-            icon.style.color = '#777';
+            // Удаляем фильм из списка
+            existingItem.remove();
+
+            if (!content.querySelector('li')) {
+                content.textContent = 'Пока пусто';
+            }
+
+            button.textContent = 'Смотреть позже';
         }
+
+        // После добавления/удаления не открываем модалку сразу — её открывает кнопка в шапке
+        overlay.style.display = 'none';
     });
 
-    label.appendChild(input);
-    label.appendChild(icon);
-    label.appendChild(textOff);
-    label.appendChild(textOn);
-
-    const style = document.createElement("style");
-    style.textContent = `
-        @keyframes beat {
-        0%, 100% { transform: scale(1);   }
-        40%      { transform: scale(1.4); }
-        }
-    `;
-    document.head.appendChild(style);
-
-    label.addEventListener('click', () => {
-        const currentUrl = new URL(window.location.href);
-        const list = document.getElementById('kp-watch-later-overlay');
-        list.innerHTML = <li>currentUrl</li>
-
-    });
-
-    return label;
+    return button;
 }
 
-// Модуль со списком фильмов из смотреть позже
+// Модальное окно «Буду смотреть»
 function createWatchLaterModal() {
-    // затемнение фона
+    const existing = document.getElementById('kp-watch-later-overlay');
+    if (existing) return existing;
+
     const overlay = document.createElement('div');
     overlay.id = 'kp-watch-later-overlay';
+    overlay.className = 'kts-overlay';
 
-    Object.assign(overlay.style, {
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        width: '100vw',
-        height: '100vh',
-        background: 'rgba(0,0,0,0.5)',
-        zIndex: '9999',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    });
-
-    // само окно
     const modal = document.createElement('div');
-
-    Object.assign(modal.style, {
-        width: '400px',
-        height: '300px',
-        background: '#1f1f1f',
-        borderRadius: '12px',
-        padding: '16px',
-        color: '#fff',
-        position: 'relative'
-    });
+    modal.id = 'kp-watch-later-modal';
+    modal.className = 'kts-modal';
 
     modal.innerHTML = `
-        <h3 style="margin-top:0;">Буду смотреть</h3>
-        <div id="watch-later-content">
-            Пока пусто 👀
-        </div>
-        <button id="close-watch-later"
-            style="
-                position:absolute;
-                top:8px;
-                right:8px;
-                background:none;
-                border:none;
-                color:#fff;
-                font-size:20px;
-                cursor:pointer;
-            "
-        >✕</button>
+        <h3>Буду смотреть</h3>
+        <div id="watch-later-content">Пока пусто</div>
+        <button class="kts-close-btn">✕</button>
     `;
 
     overlay.appendChild(modal);
 
-    // закрытие
     overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.remove();
-        }
+        if (e.target === overlay) overlay.style.display = 'none';
     });
 
-    modal.querySelector('#close-watch-later').onclick = () => {
-        overlay.remove();
-    };
+    modal.querySelector('.kts-close-btn').addEventListener('click', () => {
+        overlay.style.display = 'none';
+    });
 
     return overlay;
 }
 
-// Кнопка в шапке 
+// Кнопка списка в шапке сайта
 function createWatchLaterListButton() {
     const button = document.createElement('button');
+    button.className = 'kts-header-btn';
 
-    button.style.width = '40px';
-    button.style.height = '40px';
-    button.style.border = 'none';
-    button.style.borderRadius = '50%';
-    button.style.background = '#ff5500';
-    button.style.cursor = 'pointer';
-
-    button.style.alignSelf = 'center';
-    
     button.innerHTML = `
-        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #fff; pointer-events: none;">
+        <svg viewBox="0 0 24 24">
             <path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"/>
         </svg>
     `;
-    button.addEventListener('click', () => {
-        // защита от повторного открытия
-        if (document.getElementById('kp-watch-later-overlay')) return;
 
-        document.body.appendChild(createWatchLaterModal());
+    button.addEventListener('click', () => {
+        let overlay = document.getElementById('kp-watch-later-overlay');
+        if (!overlay) {
+            overlay = createWatchLaterModal();
+            document.body.appendChild(overlay);
+        }
+        overlay.style.display = '';
     });
-    
+
     return button;
 }

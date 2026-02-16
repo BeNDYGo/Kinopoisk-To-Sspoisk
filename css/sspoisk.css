@@ -1,0 +1,23 @@
+/* ===== Кнопка «Назад» на flcksbr.top ===== */
+
+.kts-back-btn {
+    background: rgba(42, 52, 64, 0.3);
+    color: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(68, 79, 92, 0.3);
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.kts-back-btn:hover {
+    background: #e1e4eb;
+    color: #2f3640;
+    border-color: #444f5c;
+    transform: scale(1.07);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}

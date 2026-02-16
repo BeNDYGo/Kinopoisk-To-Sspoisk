@@ -1,58 +1,55 @@
-function KinopoiskSkript(){
-
-    // Text Text_typography_secondary UserId-SecondLine Subname
-    
-    // Кнопка "Смотреть потом"
+function KinopoiskSkript() {
     const headDiv = document.querySelector('[class*="styles_userContainer__"]');
+    if (!headDiv) return;
 
-    const watchLaterListButton = createWatchLaterListButton();
-    headDiv.appendChild(watchLaterListButton);
-
-    // Проверка на страницу с тайтлом
-    const url = window.location.href
-
-    if (url === "https://www.kinopoisk.ru/"){
-        return
+    // Кнопка списка в шапке (добавляем один раз)
+    if (!headDiv.querySelector('.kts-header-btn')) {
+        headDiv.appendChild(createWatchLaterListButton());
     }
 
-    if (document.getElementById('custom-watch-button')) {
-        console.log("кнопка уже есть")
-        return;
-    }
+    if (window.location.pathname === '/') return;
+    if (document.getElementById('custom-watch-button')) return;
 
-    // Создание div рядом с названием тайтла
+    // Поиск элементов на странице фильма
     const h1 = document.querySelector('h1[itemprop="name"]');
+    if (!h1) return;
+
     const subDiv = h1.nextElementSibling;
+    if (!subDiv) return;
+
     const spans = subDiv.querySelectorAll('span');
     const ageSpan = Array.from(spans).find(span => span.textContent.match(/^\d+\+$/));
+    if (!ageSpan) return;
 
+    // Контейнер с кнопками
     const buttonContainer = createButtonContainer();
+    buttonContainer.appendChild(createWatchButton());
+    buttonContainer.appendChild(createWatchLaterButton());
 
-    // Кнопка "Смотреть бесплатно"
-    const watchButton = createWatchButton();
-    buttonContainer.appendChild(watchButton);
-
-    // Кнопка "Сохранить в список"
-    const watchLaterButton = createWatchLaterButton();
-    buttonContainer.appendChild(watchLaterButton);
-
-    // Обновление
     ageSpan.after(buttonContainer);
 }
 
-// только благодаря тому что снизу работает. Храни господь chatgpt!!
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        KinopoiskSkript();
-    });
-} else {
+// --- Инициализация ---
+
+// Первый запуск (document_idle гарантирует наличие DOM)
+try {
     KinopoiskSkript();
+    console.log('[KP] скрипт запущен');
+} catch (e) {
+    console.log('[KP] Не запустился');
 }
 
-const observer = new MutationObserver(() => {
-    if (!document.getElementById('custom-watch-button')) {
-        KinopoiskSkript();
-    }
-});
+// Отслеживание DOM-изменений для SPA-навигации и ре-рендеров React
+let throttleTimer;
 
-observer.observe(document.body, { childList: true, subtree: true });
+new MutationObserver(() => {
+    if (throttleTimer) return;
+    throttleTimer = setTimeout(() => {
+        throttleTimer = null;
+        try {
+            KinopoiskSkript();
+        } catch (e) {
+            // элементы ещё не готовы
+        }
+    }, 300);
+}).observe(document.body, { childList: true, subtree: true });

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Kinopoisk to Sspoisk",
-  "version": "1.4",
+  "version": "2.0",
   "description": "Добавляет кнопку для бесплатного просмотра",
   "permissions": [
     "activeTab"
@@ -9,11 +9,15 @@
   "content_scripts": [
     {
       "matches": ["*://*.kinopoisk.ru/*"],
-      "js": ["js/kinopoisk/buttons.js", "js/kinopoisk/kinopoisk.js"]
+      "css": ["css/kinopoisk.css"],
+      "js": ["js/kinopoisk/buttons.js", "js/kinopoisk/kinopoisk.js"],
+      "run_at": "document_idle"
     },
     {
       "matches": ["*://*.flcksbr.top/*"],
-      "js": ["js/sspoisk.js"]
+      "css": ["css/sspoisk.css"],
+      "js": ["js/sspoisk.js"],
+      "run_at": "document_idle"
     }
   ]
 }

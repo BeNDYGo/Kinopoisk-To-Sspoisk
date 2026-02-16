@@ -1,0 +1,120 @@
+/* ===== Контейнер кнопок на странице фильма ===== */
+
+.kts-btn-container {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* ===== Кнопка «Смотреть бесплатно» ===== */
+
+.kts-watch-btn {
+    color: #fff;
+    background: linear-gradient(135deg, #f50 69.93%, #d6bb00 100%);
+    transition: background 0.3s ease, transform 0.3s ease;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.kts-watch-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ===== Лейбл «Смотреть позже» ===== */
+
+.kts-watch-later-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #ebebebb6;
+    color: #000;
+    font-family: system-ui, sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.kts-watch-later-icon {
+    font-size: 20px;
+    color: #777;
+    transition: all 0.3s;
+}
+
+.kts-watch-later-icon.active {
+    color: #ffcd32;
+    animation: kts-beat 0.6s ease;
+}
+
+@keyframes kts-beat {
+    0%, 100% { transform: scale(1); }
+    40%      { transform: scale(1.4); }
+}
+
+/* ===== Модальное окно «Буду смотреть» ===== */
+
+.kts-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kts-modal {
+    width: 400px;
+    height: 300px;
+    background: #1f1f1f;
+    border-radius: 12px;
+    padding: 16px;
+    color: #fff;
+    position: relative;
+}
+
+.kts-modal h3 {
+    margin-top: 0;
+}
+
+.kts-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* ===== Кнопка списка в шапке ===== */
+
+.kts-header-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: #ff5500;
+    cursor: pointer;
+    align-self: center;
+}
+
+.kts-header-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: #fff;
+    pointer-events: none;
+}
