@@ -1,3 +1,15 @@
+/*
+В файле Собраны кнопки. По названиями понятно
+----функции----
+- ButtonContainer
+- WatchButton
+- WatchLaterButton
+- WatchLaterListButton
+- 
+*/
+
+
+
 // Контейнер кнопок на странице фильма
 function ButtonContainer() {
     const container = document.createElement('div')
@@ -71,52 +83,6 @@ function WatchLaterButton() {
     return button
 }
 
-// ПАНЕЛЬ с отложенными фильмами
-function WatchLaterPanel() {
-    // Проверка на наличие
-    let panel = document.getElementById('kp-watch-later-panel')
-    if (panel) {
-        return panel
-    }
-    // Создание панели
-    panel = document.createElement('div')
-    panel.id = 'kp-watch-later-panel'
-    panel.className = 'kts-watch-later-panel'
-
-    // Хедер панели
-    const header = document.createElement('div')
-    header.className = 'kts-watch-later-header'
-
-    // Кнопка закрытия панели
-    const closeButton = document.createElement('button')
-    closeButton.className = 'kts-watch-later-close'
-    closeButton.addEventListener('click', () => {
-        // Удаление
-        panel.classList.remove('kts-watch-later-panel--open')
-        // Обновление надписи на кнопке
-        updateWhatchLaterButton()
-    })
-
-    // Заголовок панели
-    const title = document.createElement('span')
-    title.className = 'kts-watch-later-header-title'
-    title.textContent = 'Смотреть позже'
-
-    header.appendChild(title)
-    header.appendChild(closeButton)
-    panel.appendChild(header)
-
-    // Список фильмов
-    const list = document.createElement('ul')
-    list.id = 'watch-later-content'
-    list.className = 'kts-watch-later-content'
-
-    panel.appendChild(list)
-    document.body.appendChild(panel)
-
-    return panel
-}
-
 // Кнопка в шапке со списком
 function WatchLaterListButton() {
     const button = document.createElement('button')
@@ -130,11 +96,10 @@ function WatchLaterListButton() {
     `
 
     button.addEventListener('click', () => {
-        const panel =WatchLaterPanel()
+        const panel = WatchLaterPanel()
         const isOpen = panel.classList.contains('kts-watch-later-panel--open')
         panel.classList.toggle('kts-watch-later-panel--open', !isOpen)
     })
 
     return button
 }
-

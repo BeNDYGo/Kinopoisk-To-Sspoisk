@@ -1,3 +1,11 @@
+/*
+Весь файл это главный скрипт.
+Он находит нужные элементы для встраивания кнопок
+А так же логиа постоянно запуска расширения
+*/
+
+
+
 function KinopoiskSkript() {
     const headDiv = document.querySelector('[class*="styles_userContainer__"]')
     if (!headDiv) return
@@ -24,7 +32,6 @@ function KinopoiskSkript() {
     subDiv.after(buttonContainer)
 }
 
-// Первый запуск (document_idle гарантирует наличие DOM)
 try {
     KinopoiskSkript()
     console.log('[KP] скрипт запущен')
@@ -32,7 +39,6 @@ try {
     console.log('[KP] Не запустился')
 }
 
-// Отслеживание DOM-изменений для SPA-навигации и ре-рендеров React
 let throttleTimer
 
 new MutationObserver(() => {

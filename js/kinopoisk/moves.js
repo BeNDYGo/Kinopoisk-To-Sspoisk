@@ -1,3 +1,13 @@
+/*
+В файле создание элемента с фильмом в панели с отложенными фильмами и обновление кнопки "Смотреть позже"
+после действий в панели
+----функции----
+- watchLaterItem
+- updateWhatchLaterButton
+- 
+*/
+
+
 function watchLaterItem(movie) {
     // ID
     const li = document.createElement('li')

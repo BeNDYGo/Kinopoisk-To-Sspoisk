@@ -255,3 +255,34 @@
     line-height: 1;
     font-weight: 300;
 }
+
+.kts-tabs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+}
+
+.kts-tab {
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: #bdbdbd;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.kts-tab--active {
+    background: #ff5500;
+    color: #fff;
+}
+
+.kts-watch-later-about {
+    max-height: 56vh;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e0e0e0;
+}
