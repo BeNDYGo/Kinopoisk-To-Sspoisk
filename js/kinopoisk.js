@@ -47,7 +47,11 @@ function KinopoiskSkript(){
 
     buttonContainer.style.marginTop = '16px';
     buttonContainer.appendChild(button);
-    ageSpan.after(buttonContainer);
+    if (ageSpan) {
+        ageSpan.after(buttonContainer);
+    } else {
+        subDiv.after(buttonContainer);
+    }
     console.log('Info: Button successfully added');
 }
 
