@@ -66,6 +66,7 @@ function WatchLaterButton() {
         if (existingItem) {
             // Удаление из списка
             existingItem.remove()
+            removeWatchLaterLocalStorage({ url: currentUrl })
             button.textContent = 'Смотреть позже'
         } else {
             // Добавление в список
@@ -77,6 +78,7 @@ function WatchLaterButton() {
             const moviesList = document.getElementById('watch-later-content')
             const liMovie = watchLaterItem(openMovie)
             moviesList.appendChild(liMovie)
+            addWatchLaterLocalStorage(openMovie)
             button.textContent = 'Не буду смотреть'
         }
     })

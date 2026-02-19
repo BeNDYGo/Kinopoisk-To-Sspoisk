@@ -33,6 +33,7 @@ function watchLaterItem(movie) {
     removeBtn.addEventListener('click', (e) => {
         e.stopPropagation() // Остановка обработчика перехода на тайтл
         li.remove()
+        removeWatchLaterLocalStorage(movie)
         updateWhatchLaterButton()
     })
 
@@ -65,4 +66,34 @@ function updateWhatchLaterButton() {
     } else {
         button.textContent = 'Смотреть позже'
     }
+}
+
+// Добавление фильма в localStorage
+function addWatchLaterLocalStorage(movie) {
+    // Текущий список localStorage
+    let watchLaterList = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
+    
+    // Добавляем новый фильм если его еще нет в списке
+    for (let i = 0; i < watchLaterList.length; i++) {
+        if (watchLaterList[i].url === movie.url) {
+            return
+        }
+    }
+    watchLaterList.push(movie)
+    localStorage.setItem('kts-watch-later', JSON.stringify(watchLaterList))
+}
+
+// Удаление фильма из localStorage
+function removeWatchLaterLocalStorage(movie) {
+    // Текущий список localStorage
+    let watchLaterList = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
+    
+    // Удаляем фильм из списка
+    for (let i = 0; i < watchLaterList.length; i++) {
+        if (watchLaterList[i].url === movie.url) {
+            watchLaterList.splice(i, 1)
+            break
+        }
+    }
+    localStorage.setItem('kts-watch-later', JSON.stringify(watchLaterList))
 }

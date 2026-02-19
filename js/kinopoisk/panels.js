@@ -100,5 +100,25 @@ function WatchLaterPanel() {
 
     document.body.appendChild(panel)
 
+    loadWatchLaterList() // Загрузка фильмов из localStorage
+    
     return panel
+}
+
+// Загрузка списка отложенных фильмов
+function loadWatchLaterList() {
+    const list = document.getElementById('watch-later-content')
+    const watchLaterList = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
+    
+    // Очищаем список
+    list.innerHTML = ''
+    
+    // Добавляем элементы в список и счет
+    var count = 0
+    watchLaterList.forEach((movie) => {
+        const item = watchLaterItem(movie)
+        list.appendChild(item)
+        count++
+    })
+    console.log('Загружено ' + count + ' фильмов')
 }
