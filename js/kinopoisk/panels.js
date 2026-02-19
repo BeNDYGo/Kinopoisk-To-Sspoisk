@@ -67,7 +67,35 @@ function WatchLaterPanel() {
     about.id = 'watch-later-about'
     about.className = 'kts-watch-later-about'
     about.dataset.tabContent = 'about'
-    about.textContent = 'Здесь можно вывести описание расширения, ссылку на репозиторий, инструкции и т.п.'
+    
+    // Создаем двухколоночный контейнер
+    const aboutContainer = document.createElement('div')
+    aboutContainer.className = 'kts-about-container'
+    
+    // Левая колонка
+    const leftColumn = document.createElement('div')
+    leftColumn.className = 'kts-about-column kts-about-column--left'
+    
+    const versionTitle = document.createElement('div')
+    versionTitle.className = 'kts-version-title'
+    versionTitle.textContent = 'Новейшая версия:'
+    
+    const versionBox = document.createElement('div')
+    versionBox.className = 'kts-version-box'
+    versionBox.textContent = 'V 1.5 – 2026.02.24'
+    
+    leftColumn.appendChild(versionTitle)
+    leftColumn.appendChild(versionBox)
+    
+    // Правая колонка (пока пустая)
+    const rightColumn = document.createElement('div')
+    rightColumn.className = 'kts-about-column kts-about-column--right'
+    
+    // Собираем контейнер
+    aboutContainer.appendChild(leftColumn)
+    aboutContainer.appendChild(rightColumn)
+    about.appendChild(aboutContainer)
+    
     about.hidden = true
 
     // Добавление в панель
