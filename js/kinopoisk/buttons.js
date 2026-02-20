@@ -35,14 +35,14 @@ function WatchButton() {
 }
 
 // Кнопка «Смотреть позже»
-function WatchLaterButton() {
+async function WatchLaterButton() {
     const button = document.createElement('button')
     button.id = 'whatch-later-button'
     button.className = 'kts-watch-later-label'
     button.type = 'button'
     
     // Проверка на наличие фильма в списке
-    const panel = WatchLaterPanel()
+    const panel = await WatchLaterPanel()
     const list = panel.querySelector('#watch-later-content')
 
     const currentUrl = window.location.href;
@@ -86,7 +86,7 @@ function WatchLaterButton() {
 }
 
 // Кнопка в шапке со списком
-function WatchLaterListButton() {
+async function WatchLaterListButton() {
     const button = document.createElement('button')
     button.type = 'button'
     button.className = 'kts-header-btn'
@@ -97,8 +97,8 @@ function WatchLaterListButton() {
         </svg>
     `
 
-    button.addEventListener('click', () => {
-        const panel = WatchLaterPanel()
+    button.addEventListener('click', async () => {
+        const panel = await WatchLaterPanel()
         const isOpen = panel.classList.contains('kts-watch-later-panel--open')
         panel.classList.toggle('kts-watch-later-panel--open', !isOpen)
     })

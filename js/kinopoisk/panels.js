@@ -7,7 +7,7 @@
 
 
 // ПАНЕЛЬ с отложенными фильмами
-function WatchLaterPanel() {
+async function WatchLaterPanel() {
     // Проверка на наличие
     let panel = document.getElementById('kp-watch-later-panel')
     if (panel) {
@@ -82,7 +82,17 @@ function WatchLaterPanel() {
     
     const versionBox = document.createElement('div')
     versionBox.className = 'kts-version-box'
-    versionBox.textContent = 'V 1.5 – 2026.02.24'
+    // Получения актуальной версии проекта
+    try {
+        const response = await fetch('https://bendygo.github.io/Kinopoisk-To-Sspoisk-VersionAPI/version.json')
+        const respons = await response.json()
+        const version = respons.version
+        const date = respons.date
+        versionBox.innerHTML = `V${version}<br>– ${date}`
+    } catch (error) {
+        versionBox.textContent = 'Ошибка загрузки версии'
+        console.error('Failed to fetch version:', error)
+    }
     
     leftColumn.appendChild(versionTitle)
     leftColumn.appendChild(versionBox)

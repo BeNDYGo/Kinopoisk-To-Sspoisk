@@ -6,12 +6,12 @@
 
 
 
-function KinopoiskSkript() {
+async function KinopoiskSkript() {
     const headDiv = document.querySelector('[class*="styles_userContainer__"]')
     if (!headDiv) return
 
     if (!headDiv.querySelector('.kts-header-btn')) {
-        headDiv.appendChild(WatchLaterListButton())
+        headDiv.appendChild(await WatchLaterListButton())
     }
 
     if (window.location.pathname === '/') return
@@ -27,26 +27,28 @@ function KinopoiskSkript() {
     // Контейнер с кнопками
     const buttonContainer = ButtonContainer()
     buttonContainer.appendChild(WatchButton())
-    buttonContainer.appendChild(WatchLaterButton())
+    buttonContainer.appendChild(await WatchLaterButton())
 
     subDiv.after(buttonContainer)
 }
 
-try {
-    KinopoiskSkript()
-    console.log('[KP] скрипт запущен')
-} catch (e) {
-    console.log('[KP] Не запустился')
-}
+(async () => {
+    try {
+        await KinopoiskSkript()
+        console.log('[KP] скрипт запущен')
+    } catch (e) {
+        console.log('[KP] Не запустился')
+    }
+})()
 
 let throttleTimer
 
 new MutationObserver(() => {
     if (throttleTimer) return
-    throttleTimer = setTimeout(() => {
+    throttleTimer = setTimeout(async () => {
         throttleTimer = null
         try {
-            KinopoiskSkript()
+            await KinopoiskSkript()
         } catch (e) {
             // элементы ещё не готовы
         }

@@ -30,11 +30,11 @@ function watchLaterItem(movie) {
 
 
     // Кнопка удалить (останавливает всплытие события)
-    removeBtn.addEventListener('click', (e) => {
+    removeBtn.addEventListener('click', async (e) => {
         e.stopPropagation() // Остановка обработчика перехода на тайтл
         li.remove()
         removeWatchLaterLocalStorage(movie)
-        updateWhatchLaterButton()
+        await updateWhatchLaterButton()
     })
 
     // Клик по элементу фильма для перехода на страницу
@@ -49,11 +49,11 @@ function watchLaterItem(movie) {
     return li
 }
 
-function updateWhatchLaterButton() {
+async function updateWhatchLaterButton() {
     const button = document.getElementById('whatch-later-button')
     if (!button) return
 
-    const panel = WatchLaterPanel()
+    const panel = await WatchLaterPanel()
     const list = panel.querySelector('#watch-later-content')
 
     const currentUrl = window.location.href;
