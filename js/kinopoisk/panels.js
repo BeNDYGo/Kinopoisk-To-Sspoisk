@@ -80,8 +80,10 @@ async function WatchLaterPanel() {
     versionTitle.className = 'kts-version-title'
     versionTitle.textContent = 'Новейшая версия:'
     
-    const versionBox = document.createElement('div')
+    const versionBox = document.createElement('a')
     versionBox.className = 'kts-version-box'
+    versionBox.href = 'https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases'
+    versionBox.target = '_blank'
     // Получения актуальной версии проекта
     try {
         const response = await fetch('https://bendygo.github.io/Kinopoisk-To-Sspoisk-VersionAPI/version.json')
@@ -97,9 +99,29 @@ async function WatchLaterPanel() {
     leftColumn.appendChild(versionTitle)
     leftColumn.appendChild(versionBox)
     
-    // Правая колонка (пока пустая)
+    // Правая колонка с контактами
     const rightColumn = document.createElement('div')
     rightColumn.className = 'kts-about-column kts-about-column--right'
+    
+    // Контактные ссылки
+    const contactsContainer = document.createElement('div')
+    contactsContainer.className = 'kts-contacts-container'
+    
+    const telegramLink = document.createElement('a')
+    telegramLink.href = 'https://t.me/KinipoiskToSspoisk'
+    telegramLink.target = '_blank'
+    telegramLink.className = 'kts-contact-link'
+    telegramLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/15047/15047595.png" alt="TG" width="16" height="16"> KinipoiskToSspoisk'
+    
+    const emailLink = document.createElement('a')
+    emailLink.href = 'mailto:bendygo6@gmail.com'
+    emailLink.className = 'kts-contact-link'
+    emailLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png?ga=GA1.1.1230537149.1769259151" alt="Gmail" width="16" height="16"> bendygo6@gmail.com'
+    
+    contactsContainer.appendChild(telegramLink)
+    contactsContainer.appendChild(emailLink)
+    
+    rightColumn.appendChild(contactsContainer)
     
     // Собираем контейнер
     aboutContainer.appendChild(leftColumn)

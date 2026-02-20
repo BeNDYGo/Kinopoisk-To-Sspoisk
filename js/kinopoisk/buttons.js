@@ -5,7 +5,13 @@
 - WatchButton
 - WatchLaterButton
 - WatchLaterListButton
-- 
+
+openMovie = {
+    url: currentUrl,
+    poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
+    title: document.querySelector('h1[itemprop="name"]').textContent
+}
+
 */
 
 
