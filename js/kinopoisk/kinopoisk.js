@@ -24,6 +24,9 @@ async function KinopoiskSkript() {
     const subDiv = h1.nextElementSibling
     if (!subDiv) return
     
+    // Проверка на наличие контейнера с кнопками
+    if (document.querySelector('.kts-btn-container')) return
+    
     // Контейнер с кнопками
     const buttonContainer = ButtonContainer()
     buttonContainer.appendChild(WatchButton())
