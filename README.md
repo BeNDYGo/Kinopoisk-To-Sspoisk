@@ -14,12 +14,12 @@
 
 на страницу добавляется кнопка **Смотреть бесплатно**, **Смотреть позже** и **Меню**
 
-![Screenshot_1](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_1.png)
-
 - **Смотреть бесплатно** - открывает фильм для просмотра
 - **Смотреть позже** - добавляет фильм в отложенное
 - **Меню** - открывает меню
 
+![Screenshot_1](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_1.png)
+![Screenshot_4](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_4.png)
 ![Screenshot_2](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_2.png)
 ![Screenshot_3](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_3.png)
 
