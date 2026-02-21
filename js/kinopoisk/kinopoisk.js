@@ -4,35 +4,42 @@
 А так же логиа постоянно запуска расширения
 */
 
-
+// Приходиться использовать mtx из-за race condition
+let isKinopoiskScriptRunning = false
 
 async function KinopoiskSkript() {
-    const headDiv = document.querySelector('[class*="styles_userContainer__"]')
-    if (!headDiv) return
+    // Гонка данных
+    if (isKinopoiskScriptRunning) return
+    isKinopoiskScriptRunning = true
+    
+    try {
+        const headDiv = document.querySelector('[class*="styles_userContainer__"]')
+        if (!headDiv) return
 
-    if (!headDiv.querySelector('.kts-header-btn')) {
-        headDiv.appendChild(await WatchLaterListButton())
+        // Вставка Меню
+        if (!headDiv.querySelector('.kts-header-btn')) {
+            headDiv.appendChild(await WatchLaterListButton())
+        }
+
+        if (window.location.pathname === '/') return
+
+        const h1 = document.querySelector('h1[itemprop="name"]')
+        if (!h1) return
+
+        const subDiv = h1.nextElementSibling
+        if (!subDiv) return
+        
+        // Заполнение контейнера и вставка
+        if (!document.querySelector('.kts-btn-container')) {
+            const buttonContainer = ButtonContainer()
+            buttonContainer.appendChild(WatchButton())
+            buttonContainer.appendChild(await WatchLaterButton())
+            subDiv.after(buttonContainer)
+        }
+    } finally {
+        // Разблокировка
+        isKinopoiskScriptRunning = false
     }
-
-    if (window.location.pathname === '/') return
-    if (document.getElementById('custom-watch-button')) return
-
-    // Поиск элементов на странице фильма
-    const h1 = document.querySelector('h1[itemprop="name"]')
-    if (!h1) return
-
-    const subDiv = h1.nextElementSibling
-    if (!subDiv) return
-    
-    // Проверка на наличие контейнера с кнопками
-    if (document.querySelector('.kts-btn-container')) return
-    
-    // Контейнер с кнопками
-    const buttonContainer = ButtonContainer()
-    buttonContainer.appendChild(WatchButton())
-    buttonContainer.appendChild(await WatchLaterButton())
-
-    subDiv.after(buttonContainer)
 }
 
 (async () => {

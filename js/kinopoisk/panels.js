@@ -63,6 +63,7 @@ async function WatchLaterPanel() {
     list.dataset.tabContent = 'list'
     
     // Контент вкладки About
+    // ---------------------
     const about = document.createElement('div')
     about.id = 'watch-later-about'
     about.className = 'kts-watch-later-about'
@@ -123,7 +124,8 @@ async function WatchLaterPanel() {
     
     rightColumn.appendChild(contactsContainer)
     
-    // Собираем контейнер
+    // ---------------------
+    // Сборка контейнера
     aboutContainer.appendChild(leftColumn)
     aboutContainer.appendChild(rightColumn)
     about.appendChild(aboutContainer)
@@ -139,13 +141,13 @@ async function WatchLaterPanel() {
         const tabs = panel.querySelectorAll('.kts-tab')
         const contents = panel.querySelectorAll('[data-tab-content]')
 
-        // Переключаем активный таб
+        // Скрытие
         tabs.forEach((tab) => {
             const isActive = tab.dataset.tab === tabName
             tab.classList.toggle('kts-tab--active', isActive)
         })
 
-        // Показываем только соответствующий контент
+        // Обтображение
         contents.forEach((content) => {
             const isCurrent = content.dataset.tabContent === tabName
             content.hidden = !isCurrent
