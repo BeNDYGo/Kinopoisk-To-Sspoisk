@@ -86,15 +86,11 @@ async function WatchLaterPanel() {
     versionBox.href = 'https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases'
     versionBox.target = '_blank'
     // Получения актуальной версии проекта
-    try {
-        const response = await fetch('https://bendygo.github.io/Kinopoisk-To-Sspoisk-VersionAPI/version.json')
-        const respons = await response.json()
-        const version = respons.version
-        const date = respons.date
+    const {version, date} = await getVersion()
+    if (version && date) {
         versionBox.innerHTML = `V${version}<br>– ${date}`
-    } catch (error) {
+    } else {
         versionBox.textContent = 'Ошибка загрузки версии'
-        console.error('Failed to fetch version:', error)
     }
     
     leftColumn.appendChild(versionTitle)

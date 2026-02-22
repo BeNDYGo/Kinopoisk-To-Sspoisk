@@ -2,10 +2,40 @@
 Весь файл это главный скрипт.
 Он находит нужные элементы для встраивания кнопок
 А так же логиа постоянно запуска расширения
+Так же тут происходит обработка race condition
+Получения актуальной версии проекта
 */
 
 // Приходиться использовать mtx из-за race condition
 let isKinopoiskScriptRunning = false
+
+// Переменные версии
+let curentVersion = null
+const manifest = chrome.runtime.getManifest() // получение версии
+curentVersion = manifest.version // получение версии
+console.log('V', curentVersion)
+window.curentVersion = curentVersion 
+let latestVersion = {version: null, date: null}
+
+// функция возвращает актуальную версию расширения и кеширует ее
+async function getVersion(){
+    if (latestVersion.version === null) {
+        try {
+            const response = await fetch('https://bendygo.github.io/Kinopoisk-To-Sspoisk-VersionAPI/version.json')
+            const respons = await response.json()
+            const version = respons.version
+            const date = respons.date
+            latestVersion = {version, date}
+            return latestVersion
+        } catch (error) {
+            console.error('Ошибка получения версии:', error)
+            return {version: null, date: null}
+        }
+    } else {
+        return latestVersion
+    }
+}
+window.getVersion = getVersion
 
 async function KinopoiskSkript() {
     // Гонка данных
@@ -34,6 +64,10 @@ async function KinopoiskSkript() {
             const buttonContainer = ButtonContainer()
             buttonContainer.appendChild(WatchButton())
             buttonContainer.appendChild(await WatchLaterButton())
+            const versionLabel = await VersionLabel()
+            if (versionLabel) {
+                buttonContainer.appendChild(versionLabel)
+            }
             subDiv.after(buttonContainer)
         }
     } finally {
@@ -47,7 +81,7 @@ async function KinopoiskSkript() {
         await KinopoiskSkript()
         console.log('[KP] скрипт запущен')
     } catch (e) {
-        console.log('[KP] Не запустился')
+        console.error('[KP] Не запустился', e)
     }
 })()
 

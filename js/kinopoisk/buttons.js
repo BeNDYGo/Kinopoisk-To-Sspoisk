@@ -111,3 +111,16 @@ async function WatchLaterListButton() {
 
     return button
 }
+
+// функция возвращает уведомление, если версия расширения устарела
+async function VersionLabel(){
+    const currentVersion = await getVersion()
+    if (currentVersion.version === window.curentVersion) {
+        return null
+    } else {
+        const version = document.createElement('span')
+        version.className = 'kts-version'
+        version.textContent = `*Вышла новая версия расширения ${currentVersion.version}. Пожалуйста, зайдите в Меню расширения -> About и скачайте новую версию.`
+        return version
+    }
+}
