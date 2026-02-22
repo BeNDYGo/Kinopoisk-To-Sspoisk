@@ -24,6 +24,11 @@
 ![Screenshot_2](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_2.png)
 ![Screenshot_3](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_3.png)
 
+
+# Обновления:
+>В случае выхода обновления вы будете видеть назйливое уведомление на **каждой** странице.
+
+![Screenshot_5](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_5.png)
 # Конфиденциальность:
 
 > Никакие данные не передаются!
