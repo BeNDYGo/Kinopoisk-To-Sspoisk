@@ -1,8 +1,14 @@
 {
     "manifest_version": 3,
     "name": "Kinopoisk to Sspoisk",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "description": "Добавляет кнопку для бесплатного просмотра а так же возможность откладывать фильмы",
+    "icons": {
+        "16": "preview/icon16.png",
+        "32": "preview/icon32.png",
+        "48": "preview/icon48.png",
+        "128": "preview/icon128.png"
+    },
     "permissions": [
     "activeTab"
     ],
