@@ -20,6 +20,10 @@
 
 ![Screenshot_6](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_6.png)
 
+>Далее скачайте удобный вам архив(рекомендую zip)
+
+![Screenshot_7](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_7.png)
+
 #### Чтобы установить расширение в браузер нужно следовать стандартой инструкции от chrome*:
 
 1. Откройте настройки: Запустите Chrome, нажмите на значок меню (три точки в правом верхнем углу) ➔ выберите «Расширения» ➔ «Управление расширениями».
