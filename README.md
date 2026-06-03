@@ -15,7 +15,8 @@
 <details>
 <summary>Нажмите, чтобы раскрыть</summary>
 
-#### Чтобы скачать расширение нужно нажать на последнюю версию в окне Releases в панели справа от текста, что вы сейчас читаете (или пройти по [ссылке](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases)) и скачать последнюю версию расширения
+#### Чтобы скачать расширение нужно нажать на последнюю версию в окне Releases в панели справа (фото снизу)
+(или пройти по [ссылке](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases)) и скачать последнюю версию расширения
 
 ![Screenshot_6](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_6.png)
 
