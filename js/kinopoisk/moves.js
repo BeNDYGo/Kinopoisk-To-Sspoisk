@@ -53,32 +53,25 @@ async function updateWhatchLaterButton() {
     const button = document.getElementById('whatch-later-button')
     if (!button) return
 
-    const panel = await WatchLaterPanel()
-    const list = panel.querySelector('#watch-later-content')
-
     const currentUrl = window.location.href;
-    const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
-        .find(item => item.dataset.id === currentUrl)
+    const hasMovie = isInWatchLater(currentUrl)
 
-    // Текст в зависимости от наличия
-    if (existingItem) {
+    if (hasMovie) {
         button.textContent = 'Не буду смотреть'
     } else {
         button.textContent = 'Смотреть позже'
     }
 }
 
+function isInWatchLater(url) {
+    const watchLaterList = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
+    return watchLaterList.some(item => item.url === url)
+}
+
 // Добавление фильма в localStorage
 function addWatchLaterLocalStorage(movie) {
-    // Текущий список localStorage
     let watchLaterList = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
-    
-    // Добавляем новый фильм если его еще нет в списке
-    for (let i = 0; i < watchLaterList.length; i++) {
-        if (watchLaterList[i].url === movie.url) {
-            return
-        }
-    }
+    if (isInWatchLater(movie.url)) return
     watchLaterList.push(movie)
     localStorage.setItem('kts-watch-later', JSON.stringify(watchLaterList))
 }

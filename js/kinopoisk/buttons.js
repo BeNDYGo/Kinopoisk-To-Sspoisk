@@ -46,44 +46,36 @@ async function WatchLaterButton() {
     button.id = 'whatch-later-button'
     button.className = 'kts-watch-later-label'
     button.type = 'button'
-    
-    // Проверка на наличие фильма в списке
+
     const panel = await WatchLaterPanel()
     const list = panel.querySelector('#watch-later-content')
 
     const currentUrl = window.location.href;
-    const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
-        .find(item => item.dataset.id === currentUrl)
+    const hasMovie = isInWatchLater(currentUrl)
 
-    // Текст в зависимости от наличия
-    if (existingItem) {
+    if (hasMovie) {
         button.textContent = 'Не буду смотреть'
     } else {
         button.textContent = 'Смотреть позже'
     }
 
-    // Обработчик
     button.addEventListener('click', () => {
-        // Проверка на наличие в списке
         const currentUrl = window.location.href;
-        const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
-            .find(item => item.dataset.id === currentUrl)
+        const hasMovie = isInWatchLater(currentUrl)
         
-        if (existingItem) {
-            // Удаление из списка
-            existingItem.remove()
+        if (hasMovie) {
+            const item = list.querySelector(`.kts-watch-later-item[data-id="${CSS.escape(currentUrl)}"]`)
+            if (item) item.remove()
             removeWatchLaterLocalStorage({ url: currentUrl })
             button.textContent = 'Смотреть позже'
         } else {
-            // Добавление в список
             const openMovie = {
                 url: currentUrl,
                 poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
                 title: document.querySelector('h1[itemprop="name"]').textContent
             }
-            const moviesList = document.getElementById('watch-later-content')
             const liMovie = watchLaterItem(openMovie)
-            moviesList.appendChild(liMovie)
+            list.appendChild(liMovie)
             addWatchLaterLocalStorage(openMovie)
             button.textContent = 'Не буду смотреть'
         }
