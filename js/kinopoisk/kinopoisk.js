@@ -12,7 +12,7 @@ let isKinopoiskScriptRunning = false
 // Переменные версии
 let curentVersion = null
 const manifest = chrome.runtime.getManifest() // получение версии
-curentVersion = manifest.version // получение версии
+curentVersion = manifest.version // получение актуальной версии
 console.log('V', curentVersion)
 window.curentVersion = curentVersion 
 let latestVersion = {version: null, date: null}
@@ -43,6 +43,8 @@ async function KinopoiskSkript() {
     isKinopoiskScriptRunning = true
     
     try {
+        detectAndSaveEmail()
+
         const headDiv = document.querySelector('[class*="styles_userContainer__"]')
         if (!headDiv) return
 
