@@ -1,6 +1,5 @@
 const ID_STORAGE_KEY = "kts-userID"
-const APIURL = "https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk-API"
-const BackURL = "http://45.67.131.104:8100"
+const BackURL = "http://api.kinopoisk-to-sspoisk.online:8100"
 
 
 function generateUserID() {
