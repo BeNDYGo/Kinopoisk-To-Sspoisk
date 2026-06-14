@@ -59,4 +59,41 @@ async function startExtension(){
 }
 
 
+async function requestMovieToBackend(endpoint, userID, movie) {
+    try {
+        const response = await fetch(BackURL + endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userID,
+                movie: { url: movie.url, title: movie.title, poster: movie.poster }
+            })
+        })
+
+        if (!response.ok) {
+            console.error(`[KTS] Ошибка ${endpoint}:`, response.status)
+            return
+        }
+
+        const data = await response.json()
+        console.log(`[KTS] ${endpoint} выполнен:`, data)
+    } catch (error) {
+        console.error(`[KTS] Ошибка ${endpoint}:`, error)
+    }
+}
+
+chrome.runtime.onMessage.addListener(async (message) => {
+    const userID = await getUserID()
+
+    if (message.type === "addMovie") {
+        if (userID) {
+            requestMovieToBackend("/addMovie", userID, message.movie)
+        }
+    } else if (message.type === "delMovie"){
+        if (userID) {
+            requestMovieToBackend("/delMovie", userID, message.movie)
+        }
+    }
+})
+
 chrome.runtime.onInstalled.addListener(() => startExtension())

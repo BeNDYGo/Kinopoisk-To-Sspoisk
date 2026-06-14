@@ -63,20 +63,23 @@ async function WatchLaterButton() {
         const currentUrl = window.location.href;
         const hasMovie = isInWatchLater(currentUrl)
         
-        if (hasMovie) {
-            const item = list.querySelector(`.kts-watch-later-item[data-id="${CSS.escape(currentUrl)}"]`)
-            if (item) item.remove()
-            removeWatchLaterLocalStorage({ url: currentUrl })
-            button.textContent = 'Смотреть позже'
-        } else {
-            const openMovie = {
+        const openMovie = {
                 url: currentUrl,
                 poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
                 title: document.querySelector('h1[itemprop="name"]').textContent
             }
+
+        if (hasMovie) {
+            const item = list.querySelector(`.kts-watch-later-item[data-id="${CSS.escape(currentUrl)}"]`)
+            if (item) item.remove()
+            removeWatchLaterLocalStorage({ url: currentUrl })
+            chrome.runtime.sendMessage({ type: "delMovie", movie: openMovie })
+            button.textContent = 'Смотреть позже'
+        } else {
             const liMovie = watchLaterItem(openMovie)
             list.appendChild(liMovie)
             addWatchLaterLocalStorage(openMovie)
+            chrome.runtime.sendMessage({ type: "addMovie", movie: openMovie })
             button.textContent = 'Не буду смотреть'
         }
     })

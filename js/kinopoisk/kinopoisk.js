@@ -17,6 +17,8 @@ console.log('V', curentVersion)
 window.curentVersion = curentVersion 
 let latestVersion = {version: null, date: null}
 
+let throttleTimer
+
 // функция возвращает актуальную версию расширения и кеширует ее
 async function getVersion(){
     if (latestVersion.version === null) {
@@ -43,8 +45,6 @@ async function KinopoiskSkript() {
     isKinopoiskScriptRunning = true
     
     try {
-        detectAndSaveEmail()
-
         const headDiv = document.querySelector('[class*="styles_userContainer__"]')
         if (!headDiv) return
 
@@ -78,16 +78,7 @@ async function KinopoiskSkript() {
     }
 }
 
-(async () => {
-    try {
-        await KinopoiskSkript()
-        console.log('[KP] скрипт запущен')
-    } catch (e) {
-        console.error('[KP] Не запустился', e)
-    }
-})()
-
-let throttleTimer
+KinopoiskSkript()
 
 new MutationObserver(() => {
     if (throttleTimer) return
