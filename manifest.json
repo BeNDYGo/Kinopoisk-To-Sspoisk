@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Kinopoisk to Sspoisk",
-    "version": "3.0.1",
+    "version": "3.6.3",
     "description": "Добавляет кнопку для бесплатного просмотра а так же возможность откладывать фильмы",
     "icons": {
         "16": "preview/icon16.png",
@@ -20,7 +20,7 @@
     {
         "matches": ["*://*.kinopoisk.ru/*"],
         "css": ["css/kinopoisk.css"],
-        "js": ["js/kinopoisk/moves.js", "js/kinopoisk/buttons.js", "js/kinopoisk/panels.js", "js/kinopoisk/email.js", "js/kinopoisk/kinopoisk.js"],
+        "js": ["js/kinopoisk/moves.js", "js/kinopoisk/buttons.js", "js/kinopoisk/panels.js", "js/kinopoisk/kinopoisk.js"],
         "run_at": "document_idle"
     },
     {
