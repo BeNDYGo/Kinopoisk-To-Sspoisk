@@ -180,3 +180,20 @@ function loadWatchLaterList() {
     })
     console.log('Загружено ' + count + ' фильмов')
 }
+
+async function syncWithBackend(list) {
+    const serverMovies = await chrome.runtime.sendMessage({ type: "getAllMovies" })
+    if (!serverMovies) return
+
+    const toSync = mergeWatchLaterLists(serverMovies)
+
+    // Отправляем на сервер фильмы, которых там нет
+    for (const movie of toSync) {
+        chrome.runtime.sendMessage({ type: "addMovie", movie })
+    }
+
+    // Перерисовываем список актуальными данными
+    const merged = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
+    list.innerHTML = ''
+    merged.forEach(movie => list.appendChild(watchLaterItem(movie)))
+}

@@ -8,6 +8,8 @@
 
 openMovie = {
     url: currentUrl,
+    filmId: getFilmId(currentUrl),
+    type: getContentType(currentUrl),
     poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
     title: document.querySelector('h1[itemprop="name"]').textContent
 }
@@ -62,17 +64,21 @@ async function WatchLaterButton() {
     button.addEventListener('click', () => {
         const currentUrl = window.location.href;
         const hasMovie = isInWatchLater(currentUrl)
+        const filmId = getFilmId(currentUrl)
+        const type = getContentType(currentUrl)
         
         const openMovie = {
-                url: currentUrl,
-                poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
-                title: document.querySelector('h1[itemprop="name"]').textContent
-            }
+            url: currentUrl,
+            filmId: filmId,
+            type: type,
+            poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
+            title: document.querySelector('h1[itemprop="name"]').textContent
+        }
 
         if (hasMovie) {
-            const item = list.querySelector(`.kts-watch-later-item[data-id="${CSS.escape(currentUrl)}"]`)
+            const item = list.querySelector(`.kts-watch-later-item[data-id="${filmId}"]`)
             if (item) item.remove()
-            removeWatchLaterLocalStorage({ url: currentUrl })
+            removeWatchLaterLocalStorage(openMovie)
             chrome.runtime.sendMessage({ type: "delMovie", movie: openMovie })
             button.textContent = 'Смотреть позже'
         } else {
@@ -101,6 +107,12 @@ async function WatchLaterListButton() {
     button.addEventListener('click', async () => {
         const panel = await WatchLaterPanel()
         const isOpen = panel.classList.contains('kts-watch-later-panel--open')
+
+        if (!isOpen) {
+            const list = panel.querySelector('#watch-later-content')
+            syncWithBackend(list)
+        }
+
         panel.classList.toggle('kts-watch-later-panel--open', !isOpen)
     })
 

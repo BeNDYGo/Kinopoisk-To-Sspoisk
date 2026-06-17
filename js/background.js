@@ -66,7 +66,7 @@ async function requestMovieToBackend(endpoint, userID, movie) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userID,
-                movie: { url: movie.url, title: movie.title, poster: movie.poster }
+                movie: { url: movie.url, filmId: movie.filmId, type: movie.type, title: movie.title, poster: movie.poster }
             })
         })
 
@@ -82,17 +82,39 @@ async function requestMovieToBackend(endpoint, userID, movie) {
     }
 }
 
-chrome.runtime.onMessage.addListener(async (message) => {
-    const userID = await getUserID()
+async function fetchAllMoviesFromBackend(userID) {
+    try {
+        const response = await fetch(BackURL + "/getAllMovie/" + userID)
+        if (!response.ok) {
+            console.error("[KTS] Ошибка получения фильмов:", response.status)
+            return []
+        }
+        const data = await response.json()
+        console.log("[KTS] Фильмы получены:", data.length)
+        return data
+    } catch (error) {
+        console.error("[KTS] Ошибка получения фильмов:", error)
+        return []
+    }
+}
 
-    if (message.type === "addMovie") {
-        if (userID) {
-            requestMovieToBackend("/addMovie", userID, message.movie)
-        }
-    } else if (message.type === "delMovie"){
-        if (userID) {
-            requestMovieToBackend("/delMovie", userID, message.movie)
-        }
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === "getAllMovies") {
+        (async () => {
+            const userID = await getUserID()
+            const movies = userID ? await fetchAllMoviesFromBackend(userID) : []
+            sendResponse(movies)
+        })()
+        return true
+    }
+
+    if (message.type === "addMovie" || message.type === "delMovie") {
+        (async () => {
+            const userID = await getUserID()
+            if (!userID) return
+            const endpoint = message.type === "addMovie" ? "/addMovie" : "/delMovie"
+            requestMovieToBackend(endpoint, userID, message.movie)
+        })()
     }
 })
 
