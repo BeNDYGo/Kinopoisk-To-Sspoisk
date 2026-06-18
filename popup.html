@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <div class="popup-topbar">
+            <div id="popup-auth-buttons" class="popup-topbar-auth">
+                <button class="popup-btn popup-btn--secondary">Войти</button>
+                <button class="popup-btn popup-btn--secondary">Регистрация</button>
+            </div>
+            <div id="popup-user-info" class="popup-topbar-user" hidden>
+                <button id="popup-logout-btn" class="popup-btn popup-btn--secondary">Выйти</button>
+                <span id="popup-user-email" class="popup-user-email"></span>
+            </div>
+        </div>
+
+        <div class="popup-header">
+            <img src="preview/icon48.png" alt="Logo" class="popup-logo">
+            <div class="popup-title">Kinopoisk to Sspoisk</div>
+        </div>
+<!--
+        <div class="popup-nav">
+            <a href="https://www.kinopoisk.ru/" target="_blank" class="popup-btn popup-btn--kinopoisk">Кинопоиск</a>
+        </div>
+-->
+        <form id="popup-register-form" class="popup-form" hidden>
+            <div class="popup-form-title">Регистрация</div>
+            <input type="email" id="popup-register-email" class="popup-input" placeholder="Email" required>
+            <input type="password" id="popup-register-password" class="popup-input" placeholder="Пароль" required>
+            <div class="popup-form-hint">Эти данные нужны только для входа, запомните их чтобы не потерять сохраненные фильмы</div>
+            <button type="submit" class="popup-btn popup-btn--primary">Зарегистрироваться</button>
+            <div id="popup-register-status" class="popup-form-status" hidden></div>
+        </form>
+
+        <form id="popup-login-form" class="popup-form" hidden>
+            <div class="popup-form-title">Вход</div>
+            <input type="email" id="popup-login-email" class="popup-input" placeholder="Email" required>
+            <input type="password" id="popup-login-password" class="popup-input" placeholder="Пароль" required>
+            <button type="submit" class="popup-btn popup-btn--primary">Войти</button>
+            <div id="popup-login-status" class="popup-form-status" hidden></div>
+        </form>
+
+        <div class="popup-bottom">
+            <a href="https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases" target="_blank" class="popup-version-box">
+                <span id="popup-version">V...</span>
+            </a>
+            <div class="popup-donate">
+                <a href="https://boosty.to/kinopoisktosspoisk" target="_blank" class="popup-btn popup-btn--donate">Boosty</a>
+                <a href="https://www.donationalerts.com/r/pipodripo" target="_blank" class="popup-btn popup-btn--donate">Donationalerts</a>
+            </div>
+        </div>
+
+        <div id="popup-update-note" class="popup-update-note" hidden>
+            Вышла новая версия <span id="popup-update-version"></span>
+        </div>
+    </div>
+
+    <script src="js/popup.js"></script>
+</body>
+</html>

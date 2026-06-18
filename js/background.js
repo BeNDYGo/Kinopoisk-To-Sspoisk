@@ -1,4 +1,5 @@
 const ID_STORAGE_KEY = "kts-userID"
+const EMAIL_STORAGE_KEY = "kts-userEmail"
 const BackURL = "http://api.kinopoisk-to-sspoisk.online:8100"
 
 
@@ -7,8 +8,20 @@ function generateUserID() {
 }
 
 async function saveUserID(userID){
-    chrome.storage.sync.set({ [ID_STORAGE_KEY]: userID }, () => {
-        console.log("[KTS] ID сохранен:", userID)
+    return new Promise(resolve => {
+        chrome.storage.sync.set({ [ID_STORAGE_KEY]: userID }, () => {
+            console.log("[KTS] ID сохранен:", userID)
+            resolve()
+        })
+    })
+}
+
+async function saveEmail(email){
+    return new Promise(resolve => {
+        chrome.storage.sync.set({ [EMAIL_STORAGE_KEY]: email }, () => {
+            console.log("[KTS] Email сохранен:", email)
+            resolve()
+        })
     })
 }
 
@@ -21,9 +34,9 @@ async function getUserID() {
     })
 }
 
-async function registerUserID(userID) {
+async function firstPingUser(userID) {
     try {
-        const response = await fetch(BackURL + "/register", {
+        const response = await fetch(BackURL + "/firstPing", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -34,14 +47,14 @@ async function registerUserID(userID) {
         })
         
         if (!response.ok) {
-            console.error("[KTS] Ошибка регистрации:", response.status)
+            console.error("[KTS] Ошибка firstPing:", response.status)
             return
         }
         
         const data = await response.json()
-        console.log("[KTS] Регистрация успешна:", data)
+        console.log("[KTS] FirstPing успешен:", data)
     } catch (error) {
-        console.error("[KTS] Ошибка отправки UserID:", error)
+        console.error("[KTS] Ошибка firstPing:", error)
     }
 }
 
@@ -52,7 +65,7 @@ async function startExtension(){
         const userID = generateUserID()
         
         await saveUserID(userID)
-        await registerUserID(userID)
+        await firstPingUser(userID)
     } else {
         console.log("[KTS] ID уже существует:", existingID)
     }
@@ -115,6 +128,83 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             const endpoint = message.type === "addMovie" ? "/addMovie" : "/delMovie"
             requestMovieToBackend(endpoint, userID, message.movie)
         })()
+    }
+
+    if (message.type === "register") {
+        (async () => {
+            const userID = await getUserID()
+            if (!userID) {
+                sendResponse({ success: false, error: "ID пользователя не найден" })
+                return
+            }
+            try {
+                console.log("[KTS] /register запрос:", { userID, email: message.email })
+                const response = await fetch(BackURL + "/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userID,
+                        email: message.email,
+                        password: message.password
+                    })
+                })
+                const text = await response.text()
+                console.log("[KTS] /register ответ:", response.status, text)
+                if (response.status === 200) {
+                    await saveEmail(message.email)
+                    sendResponse({ success: true, message: text })
+                } else {
+                    sendResponse({ success: false, error: text || "Ошибка регистрации" })
+                }
+            } catch (error) {
+                console.error("[KTS] /register ошибка:", error)
+                sendResponse({ success: false, error: "Ошибка соединения" })
+            }
+        })()
+        return true
+    }
+
+    if (message.type === "login") {
+        (async () => {
+            const userID = await getUserID()
+            if (!userID) {
+                sendResponse({ success: false, error: "ID пользователя не найден" })
+                return
+            }
+            try {
+                console.log("[KTS] /login запрос:", { userID, email: message.email })
+                const response = await fetch(BackURL + "/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userID,
+                        email: message.email,
+                        password: message.password
+                    })
+                })
+                const data = await response.json()
+                console.log("[KTS] /login ответ:", data)
+                if (data.userID === "0") {
+                    sendResponse({ success: false, error: "Неверный email или пароль" })
+                } else {
+                    await saveUserID(data.userID)
+                    await saveEmail(message.email)
+                    sendResponse({ success: true, message: "Вход выполнен" })
+                }
+            } catch (error) {
+                console.error("[KTS] /login ошибка:", error)
+                sendResponse({ success: false, error: "Ошибка соединения" })
+            }
+        })()
+        return true
+    }
+
+    if (message.type === "logout") {
+        chrome.storage.sync.remove(EMAIL_STORAGE_KEY, () => {
+            console.log("[KTS] Email удален")
+            sendResponse({ success: true })
+        })
+        return true
     }
 })
 
