@@ -33,6 +33,12 @@ async function WatchLaterPanel() {
     tabList.className = 'kts-tab kts-tab--active'
     tabList.dataset.tab = 'list'
     tabList.textContent = 'Отложенные'
+    // Аккаунт
+    const tabAccount = document.createElement('button')
+    tabAccount.type = 'button'
+    tabAccount.className = 'kts-tab'
+    tabAccount.dataset.tab = 'account'
+    tabAccount.textContent = 'Аккаунт'
     // About
     const tabAbout = document.createElement('button')
     tabAbout.type = 'button'
@@ -51,6 +57,7 @@ async function WatchLaterPanel() {
     })
 
     tabs.appendChild(tabList)
+    tabs.appendChild(tabAccount)
     tabs.appendChild(tabAbout)
     header.appendChild(tabs)
     header.appendChild(closeButton)
@@ -61,6 +68,196 @@ async function WatchLaterPanel() {
     list.id = 'watch-later-content'
     list.className = 'kts-watch-later-content'
     list.dataset.tabContent = 'list'
+
+    // Контент вкладки Аккаунт
+    const account = document.createElement('div')
+    account.className = 'kts-account'
+    account.dataset.tabContent = 'account'
+    account.hidden = true
+
+    function renderAccount() {
+        account.innerHTML = ''
+        chrome.storage.sync.get(["kts-userEmail"], (result) => {
+            const email = result["kts-userEmail"]
+            if (email) {
+                renderAccountLoggedIn(account, email)
+            } else {
+                renderAccountLoggedOut(account)
+            }
+        })
+    }
+
+    function renderAccountLoggedIn(container, email) {
+        const userBlock = document.createElement('div')
+        userBlock.className = 'kts-account-user'
+
+        const emailText = document.createElement('span')
+        emailText.className = 'kts-account-email'
+        emailText.textContent = email
+
+        const logoutBtn = document.createElement('button')
+        logoutBtn.type = 'button'
+        logoutBtn.className = 'kts-account-btn'
+        logoutBtn.textContent = 'Выйти'
+
+        logoutBtn.addEventListener('click', () => {
+            chrome.runtime.sendMessage({ type: "logout" }, () => {
+                renderAccount()
+            })
+        })
+
+        userBlock.appendChild(emailText)
+        userBlock.appendChild(logoutBtn)
+        container.appendChild(userBlock)
+    }
+
+    function renderAccountLoggedOut(container) {
+        const btnRow = document.createElement('div')
+        btnRow.className = 'kts-account-btn-row'
+
+        const loginTabBtn = document.createElement('button')
+        loginTabBtn.type = 'button'
+        loginTabBtn.className = 'kts-account-tab-btn kts-account-tab-btn--active'
+        loginTabBtn.textContent = 'Войти'
+
+        const registerTabBtn = document.createElement('button')
+        registerTabBtn.type = 'button'
+        registerTabBtn.className = 'kts-account-tab-btn'
+        registerTabBtn.textContent = 'Регистрация'
+
+        btnRow.appendChild(loginTabBtn)
+        btnRow.appendChild(registerTabBtn)
+        container.appendChild(btnRow)
+
+        const loginForm = document.createElement('form')
+        loginForm.className = 'kts-account-form'
+
+        const loginEmail = document.createElement('input')
+        loginEmail.type = 'email'
+        loginEmail.className = 'kts-account-input'
+        loginEmail.placeholder = 'Email'
+        loginEmail.required = true
+
+        const loginPassword = document.createElement('input')
+        loginPassword.type = 'password'
+        loginPassword.className = 'kts-account-input'
+        loginPassword.placeholder = 'Пароль'
+        loginPassword.required = true
+
+        const loginSubmit = document.createElement('button')
+        loginSubmit.type = 'submit'
+        loginSubmit.className = 'kts-account-btn'
+        loginSubmit.textContent = 'Войти'
+
+        const loginStatus = document.createElement('div')
+        loginStatus.className = 'kts-account-status'
+        loginStatus.hidden = true
+
+        loginForm.appendChild(loginEmail)
+        loginForm.appendChild(loginPassword)
+        loginForm.appendChild(loginSubmit)
+        loginForm.appendChild(loginStatus)
+
+        const registerForm = document.createElement('form')
+        registerForm.className = 'kts-account-form'
+        registerForm.hidden = true
+
+        const registerEmail = document.createElement('input')
+        registerEmail.type = 'email'
+        registerEmail.className = 'kts-account-input'
+        registerEmail.placeholder = 'Email'
+        registerEmail.required = true
+
+        const registerPassword = document.createElement('input')
+        registerPassword.type = 'password'
+        registerPassword.className = 'kts-account-input'
+        registerPassword.placeholder = 'Пароль'
+        registerPassword.required = true
+
+        const registerHint = document.createElement('div')
+        registerHint.className = 'kts-account-hint'
+        registerHint.textContent = 'Эти данные нужны только для входа, запомните их чтобы не потерять сохраненные фильмы'
+
+        const registerSubmit = document.createElement('button')
+        registerSubmit.type = 'submit'
+        registerSubmit.className = 'kts-account-btn'
+        registerSubmit.textContent = 'Зарегистрироваться'
+
+        const registerStatus = document.createElement('div')
+        registerStatus.className = 'kts-account-status'
+        registerStatus.hidden = true
+
+        registerForm.appendChild(registerEmail)
+        registerForm.appendChild(registerPassword)
+        registerForm.appendChild(registerHint)
+        registerForm.appendChild(registerSubmit)
+        registerForm.appendChild(registerStatus)
+
+        container.appendChild(loginForm)
+        container.appendChild(registerForm)
+
+        loginTabBtn.addEventListener('click', () => {
+            loginForm.hidden = false
+            registerForm.hidden = true
+            loginTabBtn.classList.add('kts-account-tab-btn--active')
+            registerTabBtn.classList.remove('kts-account-tab-btn--active')
+        })
+
+        registerTabBtn.addEventListener('click', () => {
+            registerForm.hidden = false
+            loginForm.hidden = true
+            registerTabBtn.classList.add('kts-account-tab-btn--active')
+            loginTabBtn.classList.remove('kts-account-tab-btn--active')
+        })
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            const emailVal = loginEmail.value.trim()
+            const passwordVal = loginPassword.value.trim()
+            if (!emailVal || !passwordVal) return
+
+            loginStatus.hidden = true
+            loginSubmit.disabled = true
+            loginSubmit.textContent = 'Вход...'
+
+            chrome.runtime.sendMessage({ type: "login", email: emailVal, password: passwordVal }, (response) => {
+                loginSubmit.disabled = false
+                loginSubmit.textContent = 'Войти'
+                if (response && response.success) {
+                    renderAccount()
+                } else {
+                    loginStatus.textContent = response ? response.error : 'Ошибка соединения'
+                    loginStatus.className = 'kts-account-status kts-account-status--error'
+                    loginStatus.hidden = false
+                }
+            })
+        })
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            const emailVal = registerEmail.value.trim()
+            const passwordVal = registerPassword.value.trim()
+            if (!emailVal || !passwordVal) return
+
+            registerStatus.hidden = true
+            registerSubmit.disabled = true
+            registerSubmit.textContent = 'Регистрация...'
+
+            chrome.runtime.sendMessage({ type: "register", email: emailVal, password: passwordVal }, (response) => {
+                registerSubmit.disabled = false
+                registerSubmit.textContent = 'Зарегистрироваться'
+                if (response && response.success) {
+                    renderAccount()
+                } else {
+                    registerStatus.textContent = response ? response.error : 'Ошибка соединения'
+                    registerStatus.className = 'kts-account-status kts-account-status--error'
+                    registerStatus.hidden = false
+                }
+            })
+        })
+    }
+
+    renderAccount()
     
     // Контент вкладки About
     // ---------------------
@@ -130,6 +327,7 @@ async function WatchLaterPanel() {
 
     // Добавление в панель
     panel.appendChild(list)
+    panel.appendChild(account)
     panel.appendChild(about)
 
     // Функция переключения вкладок
@@ -151,6 +349,7 @@ async function WatchLaterPanel() {
     }
     
     tabList.addEventListener('click', () => setPanelTab('list'))
+    tabAccount.addEventListener('click', () => setPanelTab('account'))
     tabAbout.addEventListener('click', () => setPanelTab('about'))
     
     // Инициализация

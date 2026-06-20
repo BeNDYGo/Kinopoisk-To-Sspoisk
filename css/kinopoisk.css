@@ -63,6 +63,14 @@
     40%      { transform: scale(1.4); }
 }
 
+/* ===== Уведомление о новой версии ===== */
+
+.kts-version {
+    color: #999;
+    font-size: 14px;
+    padding: 4px 16px;
+}
+
 /* ===== Кнопка списка в шапке ===== */
 
 .kts-header-btn {
@@ -366,4 +374,117 @@
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 85, 0, 0.3);
+}
+
+/* ===== Вкладка Аккаунт ===== */
+
+.kts-account {
+    max-height: 56vh;
+    overflow-y: auto;
+}
+
+.kts-account-user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: #2a2a2a;
+    border-radius: 8px;
+}
+
+.kts-account-email {
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+.kts-account-btn-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.kts-account-tab-btn {
+    flex: 1;
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    padding: 10px;
+    border-radius: 8px;
+    color: #bdbdbd;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.kts-account-tab-btn:hover {
+    background: #333;
+    color: #fff;
+}
+
+.kts-account-tab-btn--active {
+    background: #ff5500;
+    border-color: #ff5500;
+    color: #fff;
+}
+
+.kts-account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.kts-account-input {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #e0e0e0;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.kts-account-input::placeholder {
+    color: #888;
+}
+
+.kts-account-input:focus {
+    border-color: #ff5500;
+}
+
+.kts-account-btn {
+    background: #ff5500;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.kts-account-btn:hover {
+    background: #e64d00;
+}
+
+.kts-account-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.kts-account-status {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.kts-account-status--error {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.kts-account-hint {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
 }

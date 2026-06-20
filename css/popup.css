@@ -1,0 +1,220 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    width: 320px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.popup-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Top bar: auth buttons */
+.popup-topbar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popup-topbar-auth,
+.popup-topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.popup-user-email {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Header: logo + title */
+.popup-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-logo {
+    width: 48px;
+    height: 48px;
+}
+
+.popup-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+}
+
+/* Nav: kinopoisk */
+.popup-nav {
+    display: flex;
+    align-items: center;
+}
+
+/* Bottom: version + donate */
+.popup-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid #3a3a3a;
+    padding-top: 16px;
+}
+
+.popup-donate {
+    display: flex;
+    gap: 6px;
+}
+
+/* Buttons */
+.popup-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.popup-btn--kinopoisk {
+    color: #fff;
+    background: linear-gradient(135deg, #f50 69.93%, #d6bb00 100%);
+}
+
+.popup-btn--kinopoisk:hover {
+    transform: scale(1.05);
+}
+
+.popup-btn--secondary {
+    color: #e0e0e0;
+    background: #2a2a2a;
+}
+
+.popup-btn--secondary:hover {
+    background: #3a3a3a;
+}
+
+.popup-btn--donate {
+    color: #fff;
+    background: #ff5500;
+}
+
+.popup-btn--donate:hover {
+    background: #e64d00;
+}
+
+/* Version box */
+.popup-version-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: #e0e0e0;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+}
+
+.popup-version-box:hover {
+    background: rgba(255, 85, 0, 0.1);
+    border-color: #ff5500;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 85, 0, 0.3);
+}
+
+/* Update note */
+.popup-update-note {
+    font-size: 11px;
+    color: #ff5500;
+    text-align: center;
+    padding: 4px 0 0;
+}
+
+/* Form */
+.popup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.popup-form-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.popup-input {
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #e0e0e0;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.popup-input:focus {
+    border-color: #ff5500;
+}
+
+.popup-input::placeholder {
+    color: #777;
+}
+
+.popup-btn--primary {
+    color: #fff;
+    background: #ff5500;
+    padding: 10px;
+}
+
+.popup-btn--primary:hover {
+    background: #e64d00;
+}
+
+.popup-form-hint {
+    font-size: 11px;
+    color: #999;
+    line-height: 1.4;
+}
+
+.popup-form-status {
+    font-size: 12px;
+    text-align: center;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.popup-form-status--error {
+    color: #ff5500;
+    background: rgba(255, 85, 0, 0.1);
+}
+
+.popup-form-status--success {
+    color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+}
