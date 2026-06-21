@@ -67,7 +67,8 @@ async function startExtension(){
         await saveUserID(userID)
         await firstPingUser(userID)
     } else {
-        console.log("[KTS] ID уже существует:", existingID)
+        console.log("[KTS] ID:", existingID)
+        await firstPingUser(existingID)
     }
 }
 

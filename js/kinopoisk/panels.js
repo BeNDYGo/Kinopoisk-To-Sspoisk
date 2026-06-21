@@ -115,22 +115,57 @@ async function WatchLaterPanel() {
         const btnRow = document.createElement('div')
         btnRow.className = 'kts-account-btn-row'
 
-        const loginTabBtn = document.createElement('button')
-        loginTabBtn.type = 'button'
-        loginTabBtn.className = 'kts-account-tab-btn kts-account-tab-btn--active'
-        loginTabBtn.textContent = 'Войти'
-
         const registerTabBtn = document.createElement('button')
         registerTabBtn.type = 'button'
-        registerTabBtn.className = 'kts-account-tab-btn'
+        registerTabBtn.className = 'kts-account-tab-btn kts-account-tab-btn--active'
         registerTabBtn.textContent = 'Регистрация'
 
-        btnRow.appendChild(loginTabBtn)
+        const loginTabBtn = document.createElement('button')
+        loginTabBtn.type = 'button'
+        loginTabBtn.className = 'kts-account-tab-btn'
+        loginTabBtn.textContent = 'Войти'
+
         btnRow.appendChild(registerTabBtn)
+        btnRow.appendChild(loginTabBtn)
         container.appendChild(btnRow)
+
+        const registerForm = document.createElement('form')
+        registerForm.className = 'kts-account-form'
+
+        const registerEmail = document.createElement('input')
+        registerEmail.type = 'email'
+        registerEmail.className = 'kts-account-input'
+        registerEmail.placeholder = 'Email'
+        registerEmail.required = true
+
+        const registerPassword = document.createElement('input')
+        registerPassword.type = 'password'
+        registerPassword.className = 'kts-account-input'
+        registerPassword.placeholder = 'Пароль'
+        registerPassword.required = true
+
+        const registerHint = document.createElement('div')
+        registerHint.className = 'kts-account-hint'
+        registerHint.textContent = 'Эти данные нужны только для входа в аккаунт, никакие уведомления на почту отсылаться не будут'
+
+        const registerSubmit = document.createElement('button')
+        registerSubmit.type = 'submit'
+        registerSubmit.className = 'kts-account-btn'
+        registerSubmit.textContent = 'Зарегистрироваться'
+
+        const registerStatus = document.createElement('div')
+        registerStatus.className = 'kts-account-status'
+        registerStatus.hidden = true
+
+        registerForm.appendChild(registerEmail)
+        registerForm.appendChild(registerPassword)
+        registerForm.appendChild(registerHint)
+        registerForm.appendChild(registerSubmit)
+        registerForm.appendChild(registerStatus)
 
         const loginForm = document.createElement('form')
         loginForm.className = 'kts-account-form'
+        loginForm.hidden = true
 
         const loginEmail = document.createElement('input')
         loginEmail.type = 'email'
@@ -158,43 +193,8 @@ async function WatchLaterPanel() {
         loginForm.appendChild(loginSubmit)
         loginForm.appendChild(loginStatus)
 
-        const registerForm = document.createElement('form')
-        registerForm.className = 'kts-account-form'
-        registerForm.hidden = true
-
-        const registerEmail = document.createElement('input')
-        registerEmail.type = 'email'
-        registerEmail.className = 'kts-account-input'
-        registerEmail.placeholder = 'Email'
-        registerEmail.required = true
-
-        const registerPassword = document.createElement('input')
-        registerPassword.type = 'password'
-        registerPassword.className = 'kts-account-input'
-        registerPassword.placeholder = 'Пароль'
-        registerPassword.required = true
-
-        const registerHint = document.createElement('div')
-        registerHint.className = 'kts-account-hint'
-        registerHint.textContent = 'Эти данные нужны только для входа, запомните их чтобы не потерять сохраненные фильмы'
-
-        const registerSubmit = document.createElement('button')
-        registerSubmit.type = 'submit'
-        registerSubmit.className = 'kts-account-btn'
-        registerSubmit.textContent = 'Зарегистрироваться'
-
-        const registerStatus = document.createElement('div')
-        registerStatus.className = 'kts-account-status'
-        registerStatus.hidden = true
-
-        registerForm.appendChild(registerEmail)
-        registerForm.appendChild(registerPassword)
-        registerForm.appendChild(registerHint)
-        registerForm.appendChild(registerSubmit)
-        registerForm.appendChild(registerStatus)
-
-        container.appendChild(loginForm)
         container.appendChild(registerForm)
+        container.appendChild(loginForm)
 
         loginTabBtn.addEventListener('click', () => {
             loginForm.hidden = false
@@ -310,11 +310,27 @@ async function WatchLaterPanel() {
     const emailLink = document.createElement('a')
     emailLink.href = 'mailto:bendygo6@gmail.com'
     emailLink.className = 'kts-contact-link'
-    emailLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png?ga=GA1.1.1230537149.1769259151" alt="Gmail" width="16" height="16"> bendygo6@gmail.com'
+    emailLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png" alt="Gmail" width="16" height="16"> bendygo6@gmail.com'
     
     contactsContainer.appendChild(telegramLink)
     contactsContainer.appendChild(emailLink)
-    
+
+    // Donate ссылки
+    const boostyLink = document.createElement('a')
+    boostyLink.href = 'https://boosty.to/kinopoisktosspoisk'
+    boostyLink.target = '_blank'
+    boostyLink.className = 'kts-contact-link'
+    boostyLink.innerHTML = '<img src="https://cdn-icons-png.magnific.com/16/10880/10880476.png" alt="Donate" width="16" height="16"> Boosty'
+
+    const donatLink = document.createElement('a')
+    donatLink.href = 'https://www.donationalerts.com/r/pipodripo'
+    donatLink.target = '_blank'
+    donatLink.className = 'kts-contact-link'
+    donatLink.innerHTML = '<img src="https://cdn-icons-png.magnific.com/16/10880/10880476.png" alt="Donate" width="16" height="16"> Donationalerts'
+
+    contactsContainer.appendChild(boostyLink)
+    contactsContainer.appendChild(donatLink)
+
     rightColumn.appendChild(contactsContainer)
     
     // ---------------------
@@ -381,18 +397,22 @@ function loadWatchLaterList() {
 }
 
 async function syncWithBackend(list) {
-    const serverMovies = await chrome.runtime.sendMessage({ type: "getAllMovies" })
-    if (!serverMovies) return
+    try {
+        const serverMovies = await chrome.runtime.sendMessage({ type: "getAllMovies" })
+        if (!serverMovies) return
 
-    const toSync = mergeWatchLaterLists(serverMovies)
+        const toSync = mergeWatchLaterLists(serverMovies)
 
-    // Отправляем на сервер фильмы, которых там нет
-    for (const movie of toSync) {
-        chrome.runtime.sendMessage({ type: "addMovie", movie })
+        // Отправляем на сервер фильмы, которых там нет
+        for (const movie of toSync) {
+            chrome.runtime.sendMessage({ type: "addMovie", movie })
+        }
+
+        // Перерисовываем список актуальными данными
+        const merged = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
+        list.innerHTML = ''
+        merged.forEach(movie => list.appendChild(watchLaterItem(movie)))
+    } catch (e) {
+        // Extension context invalidated — расширение перезагрузилось
     }
-
-    // Перерисовываем список актуальными данными
-    const merged = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
-    list.innerHTML = ''
-    merged.forEach(movie => list.appendChild(watchLaterItem(movie)))
 }
