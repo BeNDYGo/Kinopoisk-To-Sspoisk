@@ -13,68 +13,64 @@ async function WatchLaterPanel() {
     if (panel) {
         return panel
     }
+
     // Создание панели
     panel = document.createElement('div')
     panel.id = 'kp-watch-later-panel'
     panel.className = 'kts-watch-later-panel'
 
-    // Хедер панели
-    const header = document.createElement('div')
-    header.className = 'kts-watch-later-header'
-    
-    // Блок вкладок
-    const tabs = document.createElement('div')
-    tabs.className = 'kts-tabs'
+    panel.innerHTML = `
+        <div class="kts-watch-later-header">
+            <div class="kts-tabs">
+                <button type="button" class="kts-tab kts-tab--active" data-tab="list">Отложенные</button>
+                <button type="button" class="kts-tab" data-tab="account">Аккаунт</button>
+                <button type="button" class="kts-tab" data-tab="about">About</button>
+            </div>
+            <button class="kts-watch-later-close"></button>
+        </div>
+        <ul id="watch-later-content" class="kts-watch-later-content" data-tab-content="list"></ul>
+        <div class="kts-account" data-tab-content="account" hidden></div>
+        <div id="watch-later-about" class="kts-watch-later-about" data-tab-content="about" hidden>
+            <div class="kts-about-container">
+                <div class="kts-about-column kts-about-column--left">
+                    <div class="kts-version-title">Новейшая версия:</div>
+                    <a class="kts-version-box" href="https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases" target="_blank" id="kts-version-box">...</a>
+                </div>
+                <div class="kts-about-column kts-about-column--right">
+                    <div class="kts-contacts-container">
+                        <a href="https://t.me/KinipoiskToSspoisk" target="_blank" class="kts-contact-link">
+                            <img src="https://cdn-icons-png.freepik.com/16/15047/15047595.png" alt="TG" width="16" height="16"> KinipoiskToSspoisk
+                        </a>
+                        <a href="mailto:bendygo6@gmail.com" class="kts-contact-link">
+                            <img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png" alt="Gmail" width="16" height="16"> bendygo6@gmail.com
+                        </a>
+                        <a href="https://boosty.to/kinopoisktosspoisk" target="_blank" class="kts-contact-link">
+                            <img src="https://cdn-icons-png.magnific.com/16/10880/10880476.png" alt="Donate" width="16" height="16"> Boosty
+                        </a>
+                        <a href="https://www.donationalerts.com/r/pipodripo" target="_blank" class="kts-contact-link">
+                            <img src="https://cdn-icons-png.magnific.com/16/10880/10880476.png" alt="Donate" width="16" height="16"> Donationalerts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `
 
-    // Табы
-    // Отложенные 
-    const tabList = document.createElement('button')
-    tabList.type = 'button'
-    tabList.className = 'kts-tab kts-tab--active'
-    tabList.dataset.tab = 'list'
-    tabList.textContent = 'Отложенные'
-    // Аккаунт
-    const tabAccount = document.createElement('button')
-    tabAccount.type = 'button'
-    tabAccount.className = 'kts-tab'
-    tabAccount.dataset.tab = 'account'
-    tabAccount.textContent = 'Аккаунт'
-    // About
-    const tabAbout = document.createElement('button')
-    tabAbout.type = 'button'
-    tabAbout.className = 'kts-tab'
-    tabAbout.dataset.tab = 'about'
-    tabAbout.textContent = 'About'
+    // Ссылки на элементы
+    const closeButton = panel.querySelector('.kts-watch-later-close')
+    const tabList = panel.querySelector('[data-tab="list"]')
+    const tabAccount = panel.querySelector('[data-tab="account"]')
+    const tabAbout = panel.querySelector('[data-tab="about"]')
+    const account = panel.querySelector('.kts-account')
+    const versionBox = panel.querySelector('#kts-version-box')
 
     // Кнопка закрытия панели
-    const closeButton = document.createElement('button')
-    closeButton.className = 'kts-watch-later-close'
     closeButton.addEventListener('click', () => {
-        // Удаление
         panel.classList.remove('kts-watch-later-panel--open')
-        // Обновление надписи на кнопке
         updateWhatchLaterButton()
     })
 
-    tabs.appendChild(tabList)
-    tabs.appendChild(tabAccount)
-    tabs.appendChild(tabAbout)
-    header.appendChild(tabs)
-    header.appendChild(closeButton)
-    panel.appendChild(header)
-
-    // Контент вкладки Отложенные
-    const list = document.createElement('ul')
-    list.id = 'watch-later-content'
-    list.className = 'kts-watch-later-content'
-    list.dataset.tabContent = 'list'
-
     // Контент вкладки Аккаунт
-    const account = document.createElement('div')
-    account.className = 'kts-account'
-    account.dataset.tabContent = 'account'
-    account.hidden = true
-
     function renderAccount() {
         account.innerHTML = ''
         chrome.storage.sync.get(["kts-userEmail"], (result) => {
@@ -88,113 +84,44 @@ async function WatchLaterPanel() {
     }
 
     function renderAccountLoggedIn(container, email) {
-        const userBlock = document.createElement('div')
-        userBlock.className = 'kts-account-user'
-
-        const emailText = document.createElement('span')
-        emailText.className = 'kts-account-email'
-        emailText.textContent = email
-
-        const logoutBtn = document.createElement('button')
-        logoutBtn.type = 'button'
-        logoutBtn.className = 'kts-account-btn'
-        logoutBtn.textContent = 'Выйти'
-
-        logoutBtn.addEventListener('click', () => {
+        container.innerHTML = `
+            <div class="kts-account-user">
+                <span class="kts-account-email">${email}</span>
+                <button type="button" class="kts-account-btn">Выйти</button>
+            </div>
+        `
+        container.querySelector('.kts-account-btn').addEventListener('click', () => {
             chrome.runtime.sendMessage({ type: "logout" }, () => {
                 renderAccount()
             })
         })
-
-        userBlock.appendChild(emailText)
-        userBlock.appendChild(logoutBtn)
-        container.appendChild(userBlock)
     }
 
     function renderAccountLoggedOut(container) {
-        const btnRow = document.createElement('div')
-        btnRow.className = 'kts-account-btn-row'
+        container.innerHTML = `
+            <div class="kts-account-btn-row">
+                <button type="button" class="kts-account-tab-btn kts-account-tab-btn--active" data-auth-tab="register">Регистрация</button>
+                <button type="button" class="kts-account-tab-btn" data-auth-tab="login">Войти</button>
+            </div>
+            <form class="kts-account-form" data-auth-form="register">
+                <input type="email" class="kts-account-input" placeholder="Email" required>
+                <input type="password" class="kts-account-input" placeholder="Пароль" required>
+                <div class="kts-account-hint">Эти данные нужны только для входа в аккаунт, никакие уведомления на почту отсылаться не будут</div>
+                <button type="submit" class="kts-account-btn">Зарегистрироваться</button>
+                <div class="kts-account-status" hidden></div>
+            </form>
+            <form class="kts-account-form" data-auth-form="login" hidden>
+                <input type="email" class="kts-account-input" placeholder="Email" required>
+                <input type="password" class="kts-account-input" placeholder="Пароль" required>
+                <button type="submit" class="kts-account-btn">Войти</button>
+                <div class="kts-account-status" hidden></div>
+            </form>
+        `
 
-        const registerTabBtn = document.createElement('button')
-        registerTabBtn.type = 'button'
-        registerTabBtn.className = 'kts-account-tab-btn kts-account-tab-btn--active'
-        registerTabBtn.textContent = 'Регистрация'
-
-        const loginTabBtn = document.createElement('button')
-        loginTabBtn.type = 'button'
-        loginTabBtn.className = 'kts-account-tab-btn'
-        loginTabBtn.textContent = 'Войти'
-
-        btnRow.appendChild(registerTabBtn)
-        btnRow.appendChild(loginTabBtn)
-        container.appendChild(btnRow)
-
-        const registerForm = document.createElement('form')
-        registerForm.className = 'kts-account-form'
-
-        const registerEmail = document.createElement('input')
-        registerEmail.type = 'email'
-        registerEmail.className = 'kts-account-input'
-        registerEmail.placeholder = 'Email'
-        registerEmail.required = true
-
-        const registerPassword = document.createElement('input')
-        registerPassword.type = 'password'
-        registerPassword.className = 'kts-account-input'
-        registerPassword.placeholder = 'Пароль'
-        registerPassword.required = true
-
-        const registerHint = document.createElement('div')
-        registerHint.className = 'kts-account-hint'
-        registerHint.textContent = 'Эти данные нужны только для входа в аккаунт, никакие уведомления на почту отсылаться не будут'
-
-        const registerSubmit = document.createElement('button')
-        registerSubmit.type = 'submit'
-        registerSubmit.className = 'kts-account-btn'
-        registerSubmit.textContent = 'Зарегистрироваться'
-
-        const registerStatus = document.createElement('div')
-        registerStatus.className = 'kts-account-status'
-        registerStatus.hidden = true
-
-        registerForm.appendChild(registerEmail)
-        registerForm.appendChild(registerPassword)
-        registerForm.appendChild(registerHint)
-        registerForm.appendChild(registerSubmit)
-        registerForm.appendChild(registerStatus)
-
-        const loginForm = document.createElement('form')
-        loginForm.className = 'kts-account-form'
-        loginForm.hidden = true
-
-        const loginEmail = document.createElement('input')
-        loginEmail.type = 'email'
-        loginEmail.className = 'kts-account-input'
-        loginEmail.placeholder = 'Email'
-        loginEmail.required = true
-
-        const loginPassword = document.createElement('input')
-        loginPassword.type = 'password'
-        loginPassword.className = 'kts-account-input'
-        loginPassword.placeholder = 'Пароль'
-        loginPassword.required = true
-
-        const loginSubmit = document.createElement('button')
-        loginSubmit.type = 'submit'
-        loginSubmit.className = 'kts-account-btn'
-        loginSubmit.textContent = 'Войти'
-
-        const loginStatus = document.createElement('div')
-        loginStatus.className = 'kts-account-status'
-        loginStatus.hidden = true
-
-        loginForm.appendChild(loginEmail)
-        loginForm.appendChild(loginPassword)
-        loginForm.appendChild(loginSubmit)
-        loginForm.appendChild(loginStatus)
-
-        container.appendChild(registerForm)
-        container.appendChild(loginForm)
+        const registerTabBtn = container.querySelector('[data-auth-tab="register"]')
+        const loginTabBtn = container.querySelector('[data-auth-tab="login"]')
+        const registerForm = container.querySelector('[data-auth-form="register"]')
+        const loginForm = container.querySelector('[data-auth-form="login"]')
 
         loginTabBtn.addEventListener('click', () => {
             loginForm.hidden = false
@@ -212,152 +139,75 @@ async function WatchLaterPanel() {
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault()
-            const emailVal = loginEmail.value.trim()
-            const passwordVal = loginPassword.value.trim()
+            const emailVal = loginForm.querySelector('input[type="email"]').value.trim()
+            const passwordVal = loginForm.querySelector('input[type="password"]').value.trim()
             if (!emailVal || !passwordVal) return
 
-            loginStatus.hidden = true
-            loginSubmit.disabled = true
-            loginSubmit.textContent = 'Вход...'
+            const status = loginForm.querySelector('.kts-account-status')
+            const submitBtn = loginForm.querySelector('button[type="submit"]')
+            status.hidden = true
+            submitBtn.disabled = true
+            submitBtn.textContent = 'Вход...'
 
             chrome.runtime.sendMessage({ type: "login", email: emailVal, password: passwordVal }, (response) => {
-                loginSubmit.disabled = false
-                loginSubmit.textContent = 'Войти'
+                submitBtn.disabled = false
+                submitBtn.textContent = 'Войти'
                 if (response && response.success) {
                     renderAccount()
                 } else {
-                    loginStatus.textContent = response ? response.error : 'Ошибка соединения'
-                    loginStatus.className = 'kts-account-status kts-account-status--error'
-                    loginStatus.hidden = false
+                    status.textContent = response ? response.error : 'Ошибка соединения'
+                    status.className = 'kts-account-status kts-account-status--error'
+                    status.hidden = false
                 }
             })
         })
 
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault()
-            const emailVal = registerEmail.value.trim()
-            const passwordVal = registerPassword.value.trim()
+            const emailVal = registerForm.querySelector('input[type="email"]').value.trim()
+            const passwordVal = registerForm.querySelector('input[type="password"]').value.trim()
             if (!emailVal || !passwordVal) return
 
-            registerStatus.hidden = true
-            registerSubmit.disabled = true
-            registerSubmit.textContent = 'Регистрация...'
+            const status = registerForm.querySelector('.kts-account-status')
+            const submitBtn = registerForm.querySelector('button[type="submit"]')
+            status.hidden = true
+            submitBtn.disabled = true
+            submitBtn.textContent = 'Регистрация...'
 
             chrome.runtime.sendMessage({ type: "register", email: emailVal, password: passwordVal }, (response) => {
-                registerSubmit.disabled = false
-                registerSubmit.textContent = 'Зарегистрироваться'
+                submitBtn.disabled = false
+                submitBtn.textContent = 'Зарегистрироваться'
                 if (response && response.success) {
                     renderAccount()
                 } else {
-                    registerStatus.textContent = response ? response.error : 'Ошибка соединения'
-                    registerStatus.className = 'kts-account-status kts-account-status--error'
-                    registerStatus.hidden = false
+                    status.textContent = response ? response.error : 'Ошибка соединения'
+                    status.className = 'kts-account-status kts-account-status--error'
+                    status.hidden = false
                 }
             })
         })
     }
 
     renderAccount()
-    
-    // Контент вкладки About
-    // ---------------------
-    const about = document.createElement('div')
-    about.id = 'watch-later-about'
-    about.className = 'kts-watch-later-about'
-    about.dataset.tabContent = 'about'
-    
-    // Создаем двухколоночный контейнер
-    const aboutContainer = document.createElement('div')
-    aboutContainer.className = 'kts-about-container'
-    
-    // Левая колонка
-    const leftColumn = document.createElement('div')
-    leftColumn.className = 'kts-about-column kts-about-column--left'
-    
-    const versionTitle = document.createElement('div')
-    versionTitle.className = 'kts-version-title'
-    versionTitle.textContent = 'Новейшая версия:'
-    
-    const versionBox = document.createElement('a')
-    versionBox.className = 'kts-version-box'
-    versionBox.href = 'https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/releases'
-    versionBox.target = '_blank'
-    // Получения актуальной версии проекта
+
+    // Получение актуальной версии проекта
     const {version, date} = await getVersion()
     if (version && date) {
         versionBox.innerHTML = `V${version}<br>– ${date}`
     } else {
         versionBox.textContent = 'Ошибка загрузки версии'
     }
-    
-    leftColumn.appendChild(versionTitle)
-    leftColumn.appendChild(versionBox)
-    
-    // Правая колонка с контактами
-    const rightColumn = document.createElement('div')
-    rightColumn.className = 'kts-about-column kts-about-column--right'
-    
-    // Контактные ссылки
-    const contactsContainer = document.createElement('div')
-    contactsContainer.className = 'kts-contacts-container'
-    
-    const telegramLink = document.createElement('a')
-    telegramLink.href = 'https://t.me/KinipoiskToSspoisk'
-    telegramLink.target = '_blank'
-    telegramLink.className = 'kts-contact-link'
-    telegramLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/15047/15047595.png" alt="TG" width="16" height="16"> KinipoiskToSspoisk'
-    
-    const emailLink = document.createElement('a')
-    emailLink.href = 'mailto:bendygo6@gmail.com'
-    emailLink.className = 'kts-contact-link'
-    emailLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png" alt="Gmail" width="16" height="16"> bendygo6@gmail.com'
-    
-    contactsContainer.appendChild(telegramLink)
-    contactsContainer.appendChild(emailLink)
-
-    // Donate ссылки
-    const boostyLink = document.createElement('a')
-    boostyLink.href = 'https://boosty.to/kinopoisktosspoisk'
-    boostyLink.target = '_blank'
-    boostyLink.className = 'kts-contact-link'
-    boostyLink.innerHTML = '<img src="https://cdn-icons-png.magnific.com/16/10880/10880476.png" alt="Donate" width="16" height="16"> Boosty'
-
-    const donatLink = document.createElement('a')
-    donatLink.href = 'https://www.donationalerts.com/r/pipodripo'
-    donatLink.target = '_blank'
-    donatLink.className = 'kts-contact-link'
-    donatLink.innerHTML = '<img src="https://cdn-icons-png.magnific.com/16/10880/10880476.png" alt="Donate" width="16" height="16"> Donationalerts'
-
-    contactsContainer.appendChild(boostyLink)
-    contactsContainer.appendChild(donatLink)
-
-    rightColumn.appendChild(contactsContainer)
-    
-    // ---------------------
-    // Сборка контейнера
-    aboutContainer.appendChild(leftColumn)
-    aboutContainer.appendChild(rightColumn)
-    about.appendChild(aboutContainer)
-    
-    about.hidden = true
-
-    // Добавление в панель
-    panel.appendChild(list)
-    panel.appendChild(account)
-    panel.appendChild(about)
 
     // Функция переключения вкладок
     function setPanelTab(tabName) {
         const tabs = panel.querySelectorAll('.kts-tab')
         const contents = panel.querySelectorAll('[data-tab-content]')
 
-        // Скрытие
         tabs.forEach((tab) => {
             const isActive = tab.dataset.tab === tabName
             tab.classList.toggle('kts-tab--active', isActive)
         })
 
-        // Обтображение
         contents.forEach((content) => {
             const isCurrent = content.dataset.tabContent === tabName
             content.hidden = !isCurrent
@@ -368,12 +218,11 @@ async function WatchLaterPanel() {
     tabAccount.addEventListener('click', () => setPanelTab('account'))
     tabAbout.addEventListener('click', () => setPanelTab('about'))
     
-    // Инициализация
     setPanelTab('list')
 
     document.body.appendChild(panel)
 
-    loadWatchLaterList() // Загрузка фильмов из localStorage
+    loadWatchLaterList()
     
     return panel
 }
@@ -383,10 +232,8 @@ function loadWatchLaterList() {
     const list = document.getElementById('watch-later-content')
     const watchLaterList = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
     
-    // Очищаем список
     list.innerHTML = ''
     
-    // Добавляем элементы в список и счет
     var count = 0
     watchLaterList.forEach((movie) => {
         const item = watchLaterItem(movie)
@@ -403,12 +250,10 @@ async function syncWithBackend(list) {
 
         const toSync = mergeWatchLaterLists(serverMovies)
 
-        // Отправляем на сервер фильмы, которых там нет
         for (const movie of toSync) {
             chrome.runtime.sendMessage({ type: "addMovie", movie })
         }
 
-        // Перерисовываем список актуальными данными
         const merged = JSON.parse(localStorage.getItem('kts-watch-later') || '[]')
         list.innerHTML = ''
         merged.forEach(movie => list.appendChild(watchLaterItem(movie)))
