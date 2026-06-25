@@ -149,13 +149,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         password: message.password
                     })
                 })
-                const text = await response.text()
-                console.log("[KTS] /register ответ:", response.status, text)
+                const data = await response.json()
+                console.log("[KTS] /register ответ:", response.status, data)
                 if (response.status === 200) {
                     await saveEmail(message.email)
-                    sendResponse({ success: true, message: text })
+                    sendResponse({ success: true, message: data.log })
                 } else {
-                    sendResponse({ success: false, error: text || "Ошибка регистрации" })
+                    sendResponse({ success: false, error: data.log || "Ошибка регистрации" })
                 }
             } catch (error) {
                 console.error("[KTS] /register ошибка:", error)
@@ -183,14 +183,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         password: message.password
                     })
                 })
-                const data = await response.json()
-                console.log("[KTS] /login ответ:", data)
-                if (data.userID === "0") {
-                    sendResponse({ success: false, error: "Неверный email или пароль" })
-                } else {
+                console.log("[KTS] /login статус:", response.status)
+                if (response.status === 200) {
+                    const data = await response.json()
                     await saveUserID(data.userID)
                     await saveEmail(message.email)
                     sendResponse({ success: true, message: "Вход выполнен" })
+                } else {
+                    sendResponse({ success: false, error: "Неверный email или пароль" })
                 }
             } catch (error) {
                 console.error("[KTS] /login ошибка:", error)
