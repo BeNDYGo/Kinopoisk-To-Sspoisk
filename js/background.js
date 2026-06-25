@@ -149,13 +149,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         password: message.password
                     })
                 })
-                const text = await response.text()
-                console.log("[KTS] /register ответ:", response.status, text)
+                const data = await response.json()
+                console.log("[KTS] /register ответ:", response.status, data)
                 if (response.status === 200) {
                     await saveEmail(message.email)
-                    sendResponse({ success: true, message: text })
+                    sendResponse({ success: true, message: data.log })
+                } else if (response.status === 409){
+                    sendResponse({ success: false, error: data.log })
                 } else {
-                    sendResponse({ success: false, error: text || "Ошибка регистрации" })
+                    sendResponse({ success: false, error: data.log || "Ошибка регистрации" })
                 }
             } catch (error) {
                 console.error("[KTS] /register ошибка:", error)
@@ -201,8 +203,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     if (message.type === "logout") {
-        chrome.storage.sync.remove(EMAIL_STORAGE_KEY, () => {
-            console.log("[KTS] Email удален")
+        chrome.storage.sync.remove([EMAIL_STORAGE_KEY, ID_STORAGE_KEY], async () => {
+            console.log("[KTS] Email и userID удалены")
+            // Генерируем новый userID для анонимного использования
+            const newUserID = generateUserID()
+            await saveUserID(newUserID)
+            await firstPingUser(newUserID)
+            console.log("[KTS] Создан новый анонимный userID:", newUserID)
             sendResponse({ success: true })
         })
         return true
