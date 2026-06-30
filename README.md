@@ -50,6 +50,17 @@
 ![Screenshot_4](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_4.png)
 ![Screenshot_2](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_2.png)
 ![Screenshot_3](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_3.png)
+![Screenshot_8](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_8.png)
+
+
+у расширения так же есть меню, которое открывается при нажатии на иконку расширения.
+
+![Screenshot_9](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_9.png)
+![Screenshot_10](https://github.com/BeNDYGo/Kinopoisk-To-Sspoisk/blob/main/preview/Screenshot_10.png)
+
+# Регистрация и Вход
+
+Как только вы скачиваете расширение вам присваивается уникальный id на который записываются все ваши фильмы. Благодаря этому даже если вы не вошли в аккаунт ваши данные все равно будут сохраняться в облаке и вы их не потеряете если переустановите расширение. Когда вы регистриретесь вы привязываете к этому id свою почту, что позволяет входить в ваш аккаунт на других устройствах
 
 
 # Обновления:
