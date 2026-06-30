@@ -190,6 +190,12 @@ async function WatchLaterPanel() {
 
     renderAccount()
 
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === 'sync' && changes['kts-userEmail']) {
+            renderAccount()
+        }
+    })
+
     // Получение актуальной версии проекта
     const {version, date} = await getVersion()
     if (version && date) {

@@ -39,6 +39,12 @@ function checkAuthState() {
 
 checkAuthState()
 
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'sync' && changes['kts-userEmail']) {
+        checkAuthState()
+    }
+})
+
 logoutBtn.addEventListener('click', () => {
     chrome.runtime.sendMessage({ type: "logout" }, () => {
         checkAuthState()
