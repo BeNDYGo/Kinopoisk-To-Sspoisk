@@ -5,13 +5,6 @@
 - WatchButton
 - WatchLaterButton
 - WatchLaterListButton
-
-openMovie = {
-    url: currentUrl,
-    poster: document.querySelector('[class*="styles_posterContainer__"]').querySelector('img').src,
-    title: document.querySelector('h1[itemprop="name"]').textContent
-}
-
 */
 
 
@@ -21,6 +14,13 @@ function ButtonContainer() {
     const container = document.createElement('div')
     container.className = 'kts-btn-container'
     return container
+}
+
+// Получение уникального ID фильма из URL Кинопоиска
+function getMovieId(url) {
+    const pathname = new URL(url, window.location.origin).pathname
+    const match = pathname.match(/\/film\/(\d+)/)
+    return match ? match[1] : null
 }
 
 // Кнопка «Смотреть бесплатно»
@@ -51,10 +51,10 @@ async function WatchLaterButton() {
     const panel = await WatchLaterPanel()
     const list = panel.querySelector('#watch-later-content')
 
-    const currentUrl = window.location.href;
+    const currentUrl = window.location.href
+    const currentMovieId = getMovieId(currentUrl)
     const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
-        .find(item => item.dataset.id === currentUrl)
-
+        .find(item => currentMovieId && getMovieId(item.dataset.id) === currentMovieId)
     // Текст в зависимости от наличия
     if (existingItem) {
         button.textContent = 'Не буду смотреть'
@@ -65,14 +65,15 @@ async function WatchLaterButton() {
     // Обработчик
     button.addEventListener('click', () => {
         // Проверка на наличие в списке
-        const currentUrl = window.location.href;
+        const currentUrl = window.location.href
+        const currentMovieId = getMovieId(currentUrl)
         const existingItem = Array.from(list.querySelectorAll('.kts-watch-later-item'))
-            .find(item => item.dataset.id === currentUrl)
+            .find(item => currentMovieId && getMovieId(item.dataset.id) === currentMovieId)
         
         if (existingItem) {
             // Удаление из списка
             existingItem.remove()
-            removeWatchLaterLocalStorage({ url: currentUrl })
+            removeWatchLaterLocalStorage({ url: existingItem.dataset.id })
             button.textContent = 'Смотреть позже'
         } else {
             // Добавление в список

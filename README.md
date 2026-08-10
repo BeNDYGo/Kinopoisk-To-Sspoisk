@@ -1,11 +1,11 @@
-<div align="center"> <h1>Kinopoisk-To-Sspoisk</h1></div>
+<div align="center"> <h1><a href="https://kinopoisk-to-sspoisk.online">Kinopoisk-To-Sspoisk</a></h1></div>
 
 ![Downloads](https://img.shields.io/github/downloads/BeNDYGo/Kinopoisk-To-Sspoisk/total.svg)
-![LastRelizDownloads](https://img.shields.io/github/downloads/BeNDYGo/Kinopoisk-To-Sspoisk/latest/total.svg)
 ![GitHub Repo stars](https://img.shields.io/github/stars/BeNDYGo/Kinopoisk-To-Sspoisk)
 
 - ![TG-img](https://cdn-icons-png.freepik.com/16/15047/15047595.png) [KinipoiskToSspoisk](https://t.me/KinipoiskToSspoisk)
 - ![Gmail-img](https://cdn-icons-png.freepik.com/16/5968/5968534.png?ga=GA1.1.1230537149.1769259151) bendygo6@gmail.com
+- <img src="preview/icon.png" width="16" height="16" alt="Website"> [Сайт проекта](https://kinopoisk-to-sspoisk.online)
 
 Расширение для бесплатного просмотра фильмов на **kinopoisk** с возможностью откладывать фильмы в избранное. 
 

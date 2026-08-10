@@ -113,10 +113,26 @@ async function WatchLaterPanel() {
     const emailLink = document.createElement('a')
     emailLink.href = 'mailto:bendygo6@gmail.com'
     emailLink.className = 'kts-contact-link'
-    emailLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png?ga=GA1.1.1230537149.1769259151" alt="Gmail" width="16" height="16"> bendygo6@gmail.com'
+    emailLink.innerHTML = '<img src="https://cdn-icons-png.freepik.com/16/5968/5968534.png" alt="Gmail" width="16" height="16"> bendygo6@gmail.com'
+
+    const donationAlertsLink = document.createElement('a')
+    donationAlertsLink.href = 'https://www.donationalerts.com/r/pipodripo'
+    donationAlertsLink.target = '_blank'
+    donationAlertsLink.rel = 'noopener noreferrer'
+    donationAlertsLink.className = 'kts-contact-link'
+    donationAlertsLink.innerHTML = '<img src="https://www.donationalerts.com/img/brand/da.svg" alt="DonationAlerts" width="16" height="16"> DonationAlerts'
+
+    const boostyLink = document.createElement('a')
+    boostyLink.href = 'https://boosty.to/kinopoisktosspoisk'
+    boostyLink.target = '_blank'
+    boostyLink.rel = 'noopener noreferrer'
+    boostyLink.className = 'kts-contact-link'
+    boostyLink.innerHTML = '<img src="https://static.boosty.to/logoLetterB.hBGeQnAu.svg" alt="Boosty" width="16" height="16"> Boosty'
     
     contactsContainer.appendChild(telegramLink)
     contactsContainer.appendChild(emailLink)
+    contactsContainer.appendChild(donationAlertsLink)
+    contactsContainer.appendChild(boostyLink)
     
     rightColumn.appendChild(contactsContainer)
     
